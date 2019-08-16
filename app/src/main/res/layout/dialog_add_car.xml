@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <TextView android:id="@+id/dialog_marka"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="sans-serif-medium"
+        android:textAllCaps="true"
+        android:lineSpacingExtra="8sp"
+        android:text="@string/podaj_marke"
+        android:textColor="#000"
+        android:textSize="14sp"
+        android:textStyle="normal" />
+
+    <EditText
+        android:id="@+id/car_marka_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:gravity="top"
+        android:hint="@string/tutaj_wpisz_marke_swojego_auta"
+        android:inputType="textCapSentences|textMultiLine|textCapCharacters"
+        android:lines="2"
+        android:textColorHint="@android:color/darker_gray"
+        android:textSize="12sp" />
+
+    <TextView android:id="@+id/dialog_model"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="sans-serif-medium"
+        android:textAllCaps="true"
+        android:lineSpacingExtra="8sp"
+        android:text="@string/podaj_model"
+        android:textColor="#000"
+        android:textSize="14sp"
+        android:textStyle="normal" />
+
+    <EditText
+        android:id="@+id/car_model_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:gravity="top"
+        android:hint="@string/tutaj_wpisz_model_twojego_auta"
+        android:inputType="textCapSentences|textMultiLine|textCapCharacters"
+        android:lines="2"
+        android:textColorHint="@android:color/darker_gray"
+        android:textSize="12sp" />
+
+    <TextView android:id="@+id/dialog_rok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="sans-serif-medium"
+        android:textAllCaps="true"
+        android:lineSpacingExtra="8sp"
+        android:text="@string/rok_produkcji"
+        android:textColor="#000"
+        android:textSize="14sp"
+        android:textStyle="normal" />
+
+    <EditText
+        android:id="@+id/car_rok_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:gravity="top"
+        android:hint="@string/tutaj_wpisz_rok_produkcji_twojego_auta"
+        android:digits="0,1,2,3,4,5,6,7,8,9,/"
+        android:inputType="textMultiLine|phone"
+        android:lines="2"
+        android:textColorHint="@android:color/darker_gray"
+        android:textSize="12sp" />
+
+    <TextView android:id="@+id/dialog_pojemnosc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="sans-serif-medium"
+        android:textAllCaps="true"
+        android:lineSpacingExtra="8sp"
+        android:text="@string/pojemnosc_silnika"
+        android:textColor="#000"
+        android:textSize="14sp"
+        android:textStyle="normal" />
+
+    <EditText
+        android:id="@+id/car_pojemnosc_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:gravity="top"
+        android:hint="@string/tutaj_wpisz_pojemnosc_silnika"
+        android:digits="0,1,2,3,4,5,6,7,8,9,."
+        android:inputType="textMultiLine|phone"
+        android:lines="2"
+        android:textColorHint="@android:color/darker_gray"
+        android:textSize="12sp" />
+
+    <TextView android:id="@+id/dialog_moc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="sans-serif-medium"
+        android:textAllCaps="true"
+        android:lineSpacingExtra="8sp"
+        android:text="@string/moc_w_KM"
+        android:textColor="#000"
+        android:textSize="14sp"
+        android:textStyle="normal" />
+
+    <EditText
+        android:id="@+id/car_moc_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:gravity="top"
+        android:hint="@string/tutaj_wpisz_moc_silnika"
+        android:digits="0,1,2,3,4,5,6,7,8,9,K,M"
+        android:inputType="textMultiLine|phone"
+        android:lines="2"
+        android:textColorHint="@android:color/darker_gray"
+        android:textSize="12sp" />
+
+    <CheckBox
+        android:id="@+id/main_car_checkbox"
+        style="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/ustaw_jako_glowne_auto"
+        android:textColor="#000" />
+
+    </LinearLayout>
+</ScrollView>

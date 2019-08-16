@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">Bezpieczne Auto</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Bezpieczne Auto</string>
+    <string name="nav_header_subtitle">Wybierz zakładkę</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="about_author">About</string>
+
+    <string name="menu_home">Dane pojazdu</string>
+    <string name="menu_replacements">Moje wymiany</string>
+    <string name="menu_share">Wyślij dane pojazdu</string>
+    <string name="share">Udostępnij</string>
+
+    <string name="car_data_txt">Lista wymienianych części:</string>
+    <string name="car_specification">Specyfikacja auta:</string>
+    <string name="podaj_marke">Podaj markę:</string>
+    <string name="tutaj_wpisz_marke_swojego_auta">np. Seat</string>
+    <string name="podaj_model">Podaj model:</string>
+    <string name="tutaj_wpisz_model_twojego_auta">np. Ibiza III</string>
+    <string name="rok_produkcji">Rok produkcji:</string>
+    <string name="tutaj_wpisz_rok_produkcji_twojego_auta">np. 2001</string>
+    <string name="pojemnosc_silnika">Pojemność silnika:</string>
+    <string name="tutaj_wpisz_pojemnosc_silnika">np. 1.9 TDI</string>
+    <string name="moc_w_KM">Moc (KM):</string>
+    <string name="tutaj_wpisz_moc_silnika">np. 90KM</string>
+    <string name="ustaw_jako_glowne_auto">Ustaw jako główne</string>
+    <string name="new_part">New part</string>
+    <string name="replacement_date">Replacement date</string>
+    <string name="part_price">Part price</string>
+    <string name="part_price_hint">np. 125</string>
+    <string name="additional_info">Additional info</string>
+
+    <string name="date_hint">%s</string>
+    <string name="part_date_adapter_placeholder">Data wymiany: %s</string>
+    <string name="part_price_adapter_placeholder">Cena części: %szł</string>
+    <string name="domyslne_auto_tooltip_text">Domyślne auto</string>
+    <string name="wybierz_auto">Wybierz auto:</string>
+    <string name="nowa_czesc">Nowa część:</string>
+    <string name="cena_czesci">Cena części:</string>
+    <string name="data_wymiany">Data wymiany:</string>
+    <string name="dodatkowe_informacje">Dodatkowe informacje:</string>
+
+</resources>
