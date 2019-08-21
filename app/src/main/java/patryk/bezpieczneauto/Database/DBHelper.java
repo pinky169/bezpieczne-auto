@@ -100,11 +100,12 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put("pojemnosc", car.getPojemnosc());
         contentValues.put("moc", car.getMoc());
         contentValues.put("ikona", car.getImg_resource());
+        contentValues.put("glowne", car.isMainCar());
         db.update(CARS_TABLE_NAME, contentValues, "id = ?", new String[]{String.valueOf(id)});
         db.close();
     }
 
-    public boolean setMainCar(long id) {
+    public void setMainCar(long id) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("glowne", 0);
@@ -112,7 +113,6 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put("glowne", 1);
         db.update(CARS_TABLE_NAME, contentValues, "id = ?", new String[]{String.valueOf(id)});
         db.close();
-        return true;
     }
 
     public Car getMainCar() {
@@ -148,11 +148,9 @@ public class DBHelper extends SQLiteOpenHelper {
         if (cursor != null && cursor.getCount()>0) {
             cursor.moveToFirst();
             int isMain = cursor.getInt(cursor.getColumnIndex("glowne"));
+            cursor.close();
 
-            if(isMain == 1)
-                return true;
-            else
-                return false;
+            return isMain == 1;
         }
 
         return false;
@@ -181,8 +179,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
         if (cursor != null && cursor.getCount()>0) {
             cursor.moveToFirst();
+            String photo = cursor.getString(cursor.getColumnIndex("photo"));
+            cursor.close();
 
-            return cursor.getString(cursor.getColumnIndex("photo"));
+            return photo;
         }
         db.close();
         return null;
@@ -201,7 +201,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<CarPart> getSpecficCarParts(long id) {
-        ArrayList<CarPart> array_list = new ArrayList<CarPart>();
+        ArrayList<CarPart> array_list = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res =  db.rawQuery( "select * from parts INNER join cars on cars.id=parts.part_id AND cars.id=?", new String[]{String.valueOf(id)});
@@ -240,7 +240,6 @@ public class DBHelper extends SQLiteOpenHelper {
             );
         }
 
-        cursor.close();
         db.close();
         return null;
     }
@@ -261,13 +260,12 @@ public class DBHelper extends SQLiteOpenHelper {
             );
         }
 
-        cursor.close();
         db.close();
         return null;
     }
 
     public ArrayList<Car> getAllCars() {
-        ArrayList<Car> array_list = new ArrayList<Car>();
+        ArrayList<Car> array_list = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor =  db.rawQuery( "select * from cars", null );
@@ -291,7 +289,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<CarPart> getAllParts() {
-        ArrayList<CarPart> array_list = new ArrayList<CarPart>();
+        ArrayList<CarPart> array_list = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res =  db.rawQuery( "select * from parts", null );
@@ -313,7 +311,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<String> getCarsNames() {
-        ArrayList<String> array_list = new ArrayList<String>();
+        ArrayList<String> array_list = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res =  db.rawQuery( "select marka from cars", null );

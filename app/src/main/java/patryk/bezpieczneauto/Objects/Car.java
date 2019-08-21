@@ -2,13 +2,13 @@ package patryk.bezpieczneauto.Objects;
 
 public class Car {
 
-    String marka;
-    String model;
-    String rok_produkcji;
-    String pojemnosc;
-    String moc;
-    int img_resource;
-    int isMainCar; // 0 - false, 1 - true
+    private String marka;
+    private String model;
+    private String rok_produkcji;
+    private String pojemnosc;
+    private String moc;
+    private int img_resource;
+    private int isMainCar; // 0 - false, 1 - true
 
     public Car(String marka, String model, String rok_produkcji, String pojemnosc, String moc, int img_resource, int isMainCar) {
         this.marka = marka;

@@ -53,7 +53,7 @@ public class ReplacementsFragment extends Fragment implements mDialogInterface {
         super.onCreate(savedInstanceState);
 
 
-        dialogInterface = (mDialogInterface) this;
+        dialogInterface = this;
         dbHelper = new DBHelper(getContext());
 
         // Lista aut (obiektów Car)
@@ -75,12 +75,12 @@ public class ReplacementsFragment extends Fragment implements mDialogInterface {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_replacements, container, false);
-        ExpandableListView expandableListView = rootView.findViewById(R.id.expandableList);
+        final ExpandableListView expandableListView = rootView.findViewById(R.id.expandableList);
         adapter = new ExpandableListAdapter(getContext(), dialogInterface, R.layout.list_group, R.layout.list_child, carData, carParts);
         expandableListView.setAdapter(adapter);
 
         // Przycisk dodawania nowych części
-        FloatingActionButton fabAddPart = rootView.findViewById(R.id.add_new_part_fab_id);
+        final FloatingActionButton fabAddPart = rootView.findViewById(R.id.add_new_part_fab_id);
         fabAddPart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -148,15 +148,14 @@ public class ReplacementsFragment extends Fragment implements mDialogInterface {
                                 TextUtils.isEmpty(partPrice.getText().toString()) ||
                                 chooseCarSpinner.getSelectedItem() == null) {
                             Toast.makeText(getContext(), "Musisz wypełnić każde pole oraz wybrać auto!", Toast.LENGTH_SHORT).show();
-                            return;
                         } else {
 
                             if (!allCars.isEmpty()) {
 
                                 dbHelper.insertPart(
                                         spinnerSelectedItemPosition+1,
-                                        partAdditionalInfo.getText().toString(),
                                         partNew.getText().toString(),
+                                        partAdditionalInfo.getText().toString(),
                                         partReplacementDate.getText().toString(),
                                         partPrice.getText().toString()
                                 );
@@ -206,7 +205,7 @@ public class ReplacementsFragment extends Fragment implements mDialogInterface {
             checkBox.setChecked(true);
         }
 
-        AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
         alertDialogBuilderUserInput.setView(view);
 
         alertDialogBuilderUserInput
@@ -240,7 +239,6 @@ public class ReplacementsFragment extends Fragment implements mDialogInterface {
                                 dbHelper.setMainCar(id);
                                 carData.set(id-1, updatedCar);
                                 carParts.put(carData.get(id-1), dbHelper.getSpecficCarParts(id));
-                                adapter.notifyDataSetChanged();
 
                                 Toast.makeText(getContext(), "Zmieniono dane auta " +
                                         currentCar.getMarka() + " (" + currentCar.getModel() +
@@ -261,11 +259,11 @@ public class ReplacementsFragment extends Fragment implements mDialogInterface {
                                 dbHelper.updateCar(id, updatedCar);
                                 carData.set(id-1, updatedCar);
                                 carParts.put(carData.get(id-1), dbHelper.getSpecficCarParts(id));
-                                adapter.notifyDataSetChanged();
 
                                 Toast.makeText(getContext(), "Zmieniono dane auta " + currentCar.getMarka() + " (" + currentCar.getModel() + ")", Toast.LENGTH_LONG).show();
                             }
 
+                            adapter.notifyDataSetChanged();
                             dbHelper.close();
                         }
                     }
