@@ -8,9 +8,9 @@
     <string name="action_settings">Settings</string>
     <string name="about_author">About</string>
 
-    <string name="menu_home">Dane pojazdu</string>
-    <string name="menu_replacements">Moje wymiany</string>
-    <string name="menu_share">Wyślij dane pojazdu</string>
+    <string name="menu_nav_home">Dane pojazdu</string>
+    <string name="menu_nav_replacements">Moje wymiany</string>
+    <string name="menu_nav_share">Wyślij dane pojazdu</string>
     <string name="share">Udostępnij</string>
 
     <string name="car_data_txt">Lista wymienianych części:</string>
@@ -41,5 +41,7 @@
     <string name="cena_czesci">Cena części:</string>
     <string name="data_wymiany">Data wymiany:</string>
     <string name="dodatkowe_informacje">Dodatkowe informacje:</string>
+    <string name="menu_nav_dokumenty">Dokumenty</string>
+    <string name="menu_nav_udostepnij_swoja_lokalizacje">Udostępnij swoją lokalizację</string>
 
 </resources>

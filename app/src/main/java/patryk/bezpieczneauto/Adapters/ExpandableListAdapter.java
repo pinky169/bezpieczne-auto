@@ -28,14 +28,16 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private int groupLayoutResourceId;
     private int childLayoutResourceId;
     private mDialogInterface dialogInterface;
+    private DBHelper dbHelper;
 
-    public ExpandableListAdapter(Context context, mDialogInterface dialogInterface, int groupLayoutResourceId, int childLayoutResourceId, ArrayList<Car> cars, HashMap<Car, List<CarPart>> carParts) {
+    public ExpandableListAdapter(Context context, mDialogInterface dialogInterface, DBHelper dbHelper, int groupLayoutResourceId, int childLayoutResourceId, ArrayList<Car> cars, HashMap<Car, List<CarPart>> carParts) {
         this.cars = cars;
         this.carParts = carParts;
         this.context = context;
         this.groupLayoutResourceId = groupLayoutResourceId;
         this.childLayoutResourceId = childLayoutResourceId;
         this.dialogInterface = dialogInterface;
+        this.dbHelper = dbHelper;
     }
 
     static class CarViewHolder
@@ -126,8 +128,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         holder.carSubInfo.setText(String.format("%s", car.getModel()));
         holder.carDate.setText(String.format("(%s)", car.getRok_produkcji()));
 
-        DBHelper dbHelper = new DBHelper(context);
-        if(dbHelper.isMainCar(groupPosition)) {
+        if(dbHelper != null && dbHelper.isMainCar(groupPosition)) {
             holder.carIsMainIcon.setVisibility(View.VISIBLE);
             holder.carIsMainIcon.setImageResource(R.drawable.ic_check_circle);
             TooltipCompat.setTooltipText(holder.carIsMainIcon, context.getResources().getString(R.string.domyslne_auto_tooltip_text));

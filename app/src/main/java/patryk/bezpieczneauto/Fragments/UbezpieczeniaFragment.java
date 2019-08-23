@@ -33,7 +33,8 @@ public class UbezpieczeniaFragment extends Fragment {
                 "15.08.2020"
         );
 
-        documents.add(doc);
+        for (int i=0; i<10; i++)
+            documents.add(doc);
     }
 
     @Nullable

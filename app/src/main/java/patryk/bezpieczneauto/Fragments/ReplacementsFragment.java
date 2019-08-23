@@ -43,15 +43,12 @@ public class ReplacementsFragment extends Fragment implements mDialogInterface {
     private ExpandableListAdapter adapter;
     private DBHelper dbHelper;
     private Spinner chooseCarSpinner;
-    private ArrayAdapter<String> spinnerAdapter;
     private int spinnerSelectedItemPosition;
-    private ArrayList<CarPart> partsList;
     private mDialogInterface dialogInterface;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         dialogInterface = this;
         dbHelper = new DBHelper(getContext());
@@ -64,7 +61,7 @@ public class ReplacementsFragment extends Fragment implements mDialogInterface {
             carParts = new HashMap<>();
 
             for(int i=0; i < carData.size(); i++) {
-                partsList = dbHelper.getSpecficCarParts(i+1);
+                ArrayList<CarPart> partsList = dbHelper.getSpecficCarParts(i + 1);
                 carParts.put(carData.get(i), partsList);
             }
         }
@@ -76,7 +73,7 @@ public class ReplacementsFragment extends Fragment implements mDialogInterface {
 
         View rootView = inflater.inflate(R.layout.fragment_replacements, container, false);
         final ExpandableListView expandableListView = rootView.findViewById(R.id.expandableList);
-        adapter = new ExpandableListAdapter(getContext(), dialogInterface, R.layout.list_group, R.layout.list_child, carData, carParts);
+        adapter = new ExpandableListAdapter(getContext(), dialogInterface, dbHelper, R.layout.list_group, R.layout.list_child, carData, carParts);
         expandableListView.setAdapter(adapter);
 
         // Przycisk dodawania nowych części
@@ -115,7 +112,7 @@ public class ReplacementsFragment extends Fragment implements mDialogInterface {
         allCars = dbHelper.getCarsNames();
 
         // Adapter spinnera wypełniany jest markami aut z listy allCars
-        spinnerAdapter = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_spinner_item, allCars);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_spinner_item, allCars);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         // Spinner z markami aut
@@ -220,7 +217,6 @@ public class ReplacementsFragment extends Fragment implements mDialogInterface {
                                 TextUtils.isEmpty(carCapacity.getText().toString()) ||
                                 TextUtils.isEmpty(carPower.getText().toString())) {
                             Toast.makeText(getContext(), "Musisz wypełnić każde pole!", Toast.LENGTH_SHORT).show();
-                            return;
                         } else {
 
                             if (checkBox.isChecked()) {

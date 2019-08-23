@@ -7,15 +7,15 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_car"
-            android:title="@string/menu_home" />
+            android:title="@string/menu_nav_home" />
         <item
             android:id="@+id/nav_replacements"
             android:icon="@drawable/ic_menu_manage"
-            android:title="@string/menu_replacements" />
+            android:title="@string/menu_nav_replacements" />
         <item
             android:id="@+id/nav_documents"
             android:icon="@drawable/ic_documents"
-            android:title="Dokumenty" />
+            android:title="@string/menu_nav_dokumenty" />
     </group>
 
     <item android:title="@string/share">
@@ -23,11 +23,11 @@
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
-                android:title="@string/menu_share" />
+                android:title="@string/menu_nav_share" />
             <item
                 android:id="@+id/nav_localization"
                 android:icon="@drawable/ic_localization"
-                android:title="Udostępnij swoją lokalizację" />
+                android:title="@string/menu_nav_udostepnij_swoja_lokalizacje" />
         </menu>
     </item>
 
