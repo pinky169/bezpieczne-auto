@@ -17,8 +17,8 @@
 
             <gradient
                 android:angle="90"
-                android:endColor="#4CAF50"
-                android:startColor="#8BC34A"
+                android:endColor="@color/colorAccent"
+                android:startColor="@color/colorPrimary"
                 android:type="linear" />
 
             <!--<corners

@@ -6,7 +6,7 @@
     android:paddingTop="10dp"
     android:paddingBottom="10dp"
     android:layout_margin="2dp"
-    android:background="@drawable/list_item_background">
+    android:background="@drawable/green_box_shadow_border">
 
     <ImageView
         android:id="@+id/item_icon"

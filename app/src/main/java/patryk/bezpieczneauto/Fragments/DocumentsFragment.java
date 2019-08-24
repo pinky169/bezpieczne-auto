@@ -8,8 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.ImageButton;
 
 import patryk.bezpieczneauto.Adapters.CustomPagerAdapter;
 import patryk.bezpieczneauto.R;
@@ -25,14 +24,14 @@ public class DocumentsFragment extends Fragment {
         final ViewPager viewPager = rootView.findViewById(R.id.viewpager);
         viewPager.setAdapter(new CustomPagerAdapter(getChildFragmentManager()));
 
-        ImageView swipeLeft = rootView.findViewById(R.id.left_nav);
-        ImageView swipeRight = rootView.findViewById(R.id.right_nav);
+        ImageButton swipeLeft = rootView.findViewById(R.id.left_nav);
+        ImageButton swipeRight = rootView.findViewById(R.id.right_nav);
 
         swipeLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 viewPager.arrowScroll(View.FOCUS_LEFT);
-                Toast.makeText(getContext(), "PRZEGLĄDY", Toast.LENGTH_LONG).show();
+                // Toast.makeText(getContext(), "PRZEGLĄDY", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -40,7 +39,7 @@ public class DocumentsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 viewPager.arrowScroll(View.FOCUS_RIGHT);
-                Toast.makeText(getContext(), "UBEZPIECZENIA", Toast.LENGTH_LONG).show();
+                // Toast.makeText(getContext(), "UBEZPIECZENIA", Toast.LENGTH_LONG).show();
             }
         });
 
