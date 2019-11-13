@@ -30,12 +30,12 @@ import java.util.Objects;
 
 import patryk.bezpieczneauto.Adapters.ExpandableListAdapter;
 import patryk.bezpieczneauto.Database.DBHelper;
-import patryk.bezpieczneauto.Interfaces.mDialogInterface;
+import patryk.bezpieczneauto.Interfaces.Cars;
 import patryk.bezpieczneauto.Objects.Car;
 import patryk.bezpieczneauto.Objects.CarPart;
 import patryk.bezpieczneauto.R;
 
-public class ReplacementsFragment extends Fragment implements mDialogInterface {
+public class ReplacementsFragment extends Fragment implements Cars {
 
     private ArrayList<Car> carData;
     private ArrayList<String> allCars;
@@ -44,13 +44,13 @@ public class ReplacementsFragment extends Fragment implements mDialogInterface {
     private DBHelper dbHelper;
     private Spinner chooseCarSpinner;
     private int spinnerSelectedItemPosition;
-    private mDialogInterface dialogInterface;
+    private Cars mInterface;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        dialogInterface = this;
+        mInterface = this;
         dbHelper = new DBHelper(getContext());
 
         // Lista aut (obiektów Car)
@@ -73,7 +73,7 @@ public class ReplacementsFragment extends Fragment implements mDialogInterface {
 
         View rootView = inflater.inflate(R.layout.fragment_replacements, container, false);
         final ExpandableListView expandableListView = rootView.findViewById(R.id.expandableList);
-        adapter = new ExpandableListAdapter(getContext(), dialogInterface, dbHelper, R.layout.list_group, R.layout.list_child, carData, carParts);
+        adapter = new ExpandableListAdapter(getContext(), mInterface, dbHelper, R.layout.list_group, R.layout.list_child, carData, carParts);
         expandableListView.setAdapter(adapter);
 
         // Przycisk dodawania nowych części
@@ -81,7 +81,7 @@ public class ReplacementsFragment extends Fragment implements mDialogInterface {
         fabAddPart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addPartDialog();
+                addDialog();
             }
         });
 
@@ -89,7 +89,7 @@ public class ReplacementsFragment extends Fragment implements mDialogInterface {
     }
 
     // Dodawanie nowej części dla wybranego auta
-    public void addPartDialog() {
+    public void addDialog() {
 
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getActivity());
         View view = layoutInflaterAndroid.inflate(R.layout.dialog_add_part, null);
@@ -179,7 +179,7 @@ public class ReplacementsFragment extends Fragment implements mDialogInterface {
     }
 
     // Edytowanie danych auta o podanym id
-    public void editCarDialog(final int id) {
+    public void editDialog(final int id) {
 
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getContext());
         View view = layoutInflaterAndroid.inflate(R.layout.dialog_add_car, null);
@@ -274,16 +274,16 @@ public class ReplacementsFragment extends Fragment implements mDialogInterface {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-//                                dbHelper.deletePart(id);
-//                                dbHelper.deleteCar(id);
-//                                carData = dbHelper.getAllCars();
-//                                adapter.notifyDataSetChanged();
-//
-//                                Toast.makeText(getContext(), "Usunięto auto " +
-//                                        currentCar.getMarka() + " (" +
-//                                        currentCar.getModel() + ")", Toast.LENGTH_LONG).show();
+                                dbHelper.deletePart(id);
+                                dbHelper.deleteCar(id);
+                                // TO-DO
+//                                carData.remove(carData.get(id-1));
+//                                carParts.remove(carData.get(id-1));
+                                adapter.notifyDataSetChanged();
 
-                                Toast.makeText(getContext(), "TO-DO", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(), "Usunięto auto " +
+                                        currentCar.getMarka() + " (" +
+                                        currentCar.getModel() + ")", Toast.LENGTH_LONG).show();
                             }
                         });
 

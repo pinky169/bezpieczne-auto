@@ -61,7 +61,7 @@ public class DocumentsListAdapter extends ArrayAdapter<Document> {
 
         Document document = getItem(position);
         holder.carName.setText(document.getAuto());
-        holder.docInfo.setText(document.getInfo());
+        holder.docInfo.setText(document.getPolicy());
         holder.docAdditionalInfo.setText(document.getAdditionalInfo());
         holder.docDate.setText(String.format("Od: %s", document.getDate()));
         holder.docExpiryDate.setText(String.format("Do: %s", document.getExpiryDate()));

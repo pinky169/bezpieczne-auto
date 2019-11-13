@@ -25,16 +25,15 @@ public class PrzegladyFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Document doc = new Document(
+        Document przeglad2019 = new Document(
                 "Seat Ibiza III",
                 "PRZEGLĄD 2019",
                 "Stan licznika podczas badania: 309745km",
-                "18.08.2019",
-                "17.08.2020"
+                "25.04.2019",
+                "25.04.2020"
         );
 
-        for (int i=0; i<10; i++)
-            documents.add(doc);
+        documents.add(przeglad2019);
     }
 
     @Nullable

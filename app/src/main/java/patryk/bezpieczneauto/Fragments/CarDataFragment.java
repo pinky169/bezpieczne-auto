@@ -2,11 +2,9 @@ package patryk.bezpieczneauto.Fragments;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
@@ -35,10 +33,11 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import patryk.bezpieczneauto.Database.DBHelper;
+import patryk.bezpieczneauto.Interfaces.Cars;
 import patryk.bezpieczneauto.Objects.Car;
 import patryk.bezpieczneauto.R;
 
-public class CarDataFragment extends Fragment {
+public class CarDataFragment extends Fragment implements Cars {
 
     private static final int CAMERA_REQUEST = 1337;
     private static final int CAMERA_PERMISSION_CODE = 111;
@@ -93,7 +92,7 @@ public class CarDataFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addCarDialog();
+                addDialog();
             }
         });
 
@@ -189,27 +188,7 @@ public class CarDataFragment extends Fragment {
         return null;
     }
 
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        Bitmap OutImage = Bitmap.createScaledBitmap(inImage, 500, 500,true);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), OutImage, "Title", null);
-        return Uri.parse(path);
-    }
-
-    public String getRealPathFromURI(Uri uri) {
-        String path = "";
-        if (getContext().getContentResolver() != null) {
-            Cursor cursor = getContext().getContentResolver().query(uri, null, null, null, null);
-            if (cursor != null) {
-                cursor.moveToFirst();
-                int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-                path = cursor.getString(idx);
-                cursor.close();
-            }
-        }
-        return path;
-    }
-
-    private void addCarDialog() {
+    public void addDialog() {
 
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getActivity());
         View view = layoutInflaterAndroid.inflate(R.layout.dialog_add_car, null);
@@ -290,6 +269,11 @@ public class CarDataFragment extends Fragment {
 
         final AlertDialog alertDialog = alertDialogBuilderUserInput.create();
         alertDialog.show();
+    }
+
+    @Override
+    public void editDialog(int id) {
+        // TO-DO
     }
 
     private void wstawAutka(DBHelper dbHelper) {

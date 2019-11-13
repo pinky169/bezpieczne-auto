@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import patryk.bezpieczneauto.Objects.Car;
 import patryk.bezpieczneauto.Objects.CarPart;
+import patryk.bezpieczneauto.Objects.Document;
 import patryk.bezpieczneauto.R;
 
 public class DBHelper extends SQLiteOpenHelper {
@@ -37,6 +38,22 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String CAR_PHOTO_TABLE = "mainCarPhoto";
     private static final String CAR_PHOTO_ID = "photo_id";
     private static final String CAR_PHOTO = "photo";
+
+    private static final String INSURANCE_TABLE = "insurance";
+    private static final String INSURANCE_CAR_ID = "car_id";
+    private static final String INSURANCE_CAR_NAME = "car";
+    private static final String INSURANCE_POLICY_NR = "policy";
+    private static final String INSURANCE_ADDITIONAL_INFO = "additional_info";
+    private static final String INSURANCE_DATE_FROM = "date_from";
+    private static final String INSURANCE_DATE_TO = "date_to";
+
+    private static final String CAR_SERVICE_TABLE = "service";
+    private static final String CAR_SERVICE_CAR_ID = "car_id";
+    private static final String CAR_SERVICE_CAR_NAME = "car";
+    private static final String CAR_SERVICE_INFO = "info";
+    private static final String CAR_SERVICE_ADDITIONAL_INFO = "additional_info";
+    private static final String CAR_SERVICE_DATE_FROM = "date_from";
+    private static final String CAR_SERVICE_DATE_TO = "date_to";
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -66,8 +83,29 @@ public class DBHelper extends SQLiteOpenHelper {
         );
 
         db.execSQL("CREATE TABLE " + CAR_PHOTO_TABLE +   " (" +
-                CAR_PHOTO_ID + " integer primary key autoincrement, " +
-                CAR_PHOTO + " TEXT);"
+                CAR_PHOTO_ID + " integer, " +
+                CAR_PHOTO + " TEXT, " +
+                "FOREIGN KEY (" + CAR_PHOTO_ID + ") REFERENCES " + CARS_TABLE_NAME + "(" + CARS_COLUMN_ID + "));"
+        );
+
+        db.execSQL("CREATE TABLE " + INSURANCE_TABLE + " (" +
+                INSURANCE_CAR_ID + " integer, " +
+                INSURANCE_CAR_NAME + " TEXT NOT NULL, " +
+                INSURANCE_POLICY_NR + " TEXT NOT NULL, " +
+                INSURANCE_ADDITIONAL_INFO + " TEXT NOT NULL, " +
+                INSURANCE_DATE_FROM + " TEXT NOT NULL, " +
+                INSURANCE_DATE_TO + " TEXT NOT NULL, " +
+                "FOREIGN KEY (" + INSURANCE_CAR_ID + ") REFERENCES " + CARS_TABLE_NAME + "(" + CARS_COLUMN_ID + "));"
+        );
+
+        db.execSQL("CREATE TABLE " + CAR_SERVICE_TABLE + " (" +
+                CAR_SERVICE_CAR_ID + " integer, " +
+                CAR_SERVICE_CAR_NAME + " TEXT NOT NULL, " +
+                CAR_SERVICE_INFO + " TEXT NOT NULL, " +
+                CAR_SERVICE_ADDITIONAL_INFO + " TEXT NOT NULL, " +
+                CAR_SERVICE_DATE_FROM + " TEXT NOT NULL, " +
+                CAR_SERVICE_DATE_TO + " TEXT NOT NULL, " +
+                "FOREIGN KEY (" + CAR_SERVICE_CAR_ID + ") REFERENCES " + CARS_TABLE_NAME + "(" + CARS_COLUMN_ID + "));"
         );
     }
 
@@ -337,6 +375,166 @@ public class DBHelper extends SQLiteOpenHelper {
     public void deletePart(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
         db.delete(PARTS_TABLE_NAME, "part_id=?", new String[]{Integer.toString(id)});
+        db.close();
+    }
+
+    public void insertInsurance(int car_id, String car_name, String policy, String additional_info, String dateFrom, String dateTo) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("car_id", car_id);
+        contentValues.put("car", car_name);
+        contentValues.put("policy", policy);
+        contentValues.put("additional_info", additional_info);
+        contentValues.put("date_from", dateFrom);
+        contentValues.put("date_to", dateTo);
+        db.insert(INSURANCE_TABLE, null, contentValues);
+        db.close();
+    }
+
+    public void insertInsurance(int car_id, Document insurance) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("car_id", car_id);
+        contentValues.put("car", insurance.getAuto());
+        contentValues.put("policy", insurance.getPolicy());
+        contentValues.put("additional_info", insurance.getAdditionalInfo());
+        contentValues.put("date_from", insurance.getDate());
+        contentValues.put("date_to", insurance.getExpiryDate());
+        db.insert(INSURANCE_TABLE, null, contentValues);
+        db.close();
+    }
+
+    public Document getInsurance(int car_id) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from cars inner join insurance on cars.id=? and cars.id=insurance.car_id", new String[]{String.valueOf(car_id)});
+
+        if (cursor != null) {
+
+            cursor.moveToFirst();
+            return new Document(
+                    cursor.getString(cursor.getColumnIndex("car")),
+                    cursor.getString(cursor.getColumnIndex("policy")),
+                    cursor.getString(cursor.getColumnIndex("additional_info")),
+                    cursor.getString(cursor.getColumnIndex("date_from")),
+                    cursor.getString(cursor.getColumnIndex("date_to"))
+            );
+        }
+
+        db.close();
+        return null;
+    }
+
+    public ArrayList<Document> getInsurances() {
+        ArrayList<Document> array_list = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from insurance", null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                array_list.add(new Document(
+                        cursor.getString(cursor.getColumnIndex("car")),
+                        cursor.getString(cursor.getColumnIndex("policy")),
+                        cursor.getString(cursor.getColumnIndex("additional_info")),
+                        cursor.getString(cursor.getColumnIndex("date_from")),
+                        cursor.getString(cursor.getColumnIndex("date_to"))
+                ));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return array_list;
+    }
+
+    public void updateInsurance(int id, Document document) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("policy", document.getPolicy());
+        contentValues.put("additional_info", document.getAdditionalInfo());
+        contentValues.put("date_from", document.getDate());
+        contentValues.put("date_to", document.getExpiryDate());
+        db.update(INSURANCE_TABLE, contentValues, "car_id = ?", new String[]{String.valueOf(id)});
+        db.close();
+    }
+
+    public void insertCarService(int car_id, String car_name, String policy, String additional_info, String dateFrom, String dateTo) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("car_id", car_id);
+        contentValues.put("car", car_name);
+        contentValues.put("info", policy);
+        contentValues.put("additional_info", additional_info);
+        contentValues.put("date_from", dateFrom);
+        contentValues.put("date_to", dateTo);
+        db.insert(CAR_SERVICE_TABLE, null, contentValues);
+        db.close();
+    }
+
+    public void insertCarService(int car_id, Document insurance) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("car_id", car_id);
+        contentValues.put("car", insurance.getAuto());
+        contentValues.put("info", insurance.getPolicy());
+        contentValues.put("additional_info", insurance.getAdditionalInfo());
+        contentValues.put("date_from", insurance.getDate());
+        contentValues.put("date_to", insurance.getExpiryDate());
+        db.insert(CAR_SERVICE_TABLE, null, contentValues);
+        db.close();
+    }
+
+    public Document getCarService(int car_id) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from cars inner join service on cars.id=? and cars.id=service.car_id", new String[]{String.valueOf(car_id)});
+
+        if (cursor != null) {
+
+            cursor.moveToFirst();
+            return new Document(
+                    cursor.getString(cursor.getColumnIndex("car")),
+                    cursor.getString(cursor.getColumnIndex("info")),
+                    cursor.getString(cursor.getColumnIndex("additional_info")),
+                    cursor.getString(cursor.getColumnIndex("date_from")),
+                    cursor.getString(cursor.getColumnIndex("date_to"))
+
+            );
+        }
+        db.close();
+        return null;
+    }
+
+    public ArrayList<Document> getCarServices() {
+        ArrayList<Document> array_list = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from insurance", null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                array_list.add(new Document(
+                        cursor.getString(cursor.getColumnIndex("car")),
+                        cursor.getString(cursor.getColumnIndex("policy")),
+                        cursor.getString(cursor.getColumnIndex("additional_info")),
+                        cursor.getString(cursor.getColumnIndex("date_from")),
+                        cursor.getString(cursor.getColumnIndex("date_to"))
+                ));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return array_list;
+    }
+
+    public void updateCarService(int id, Document document) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("info", document.getPolicy());
+        contentValues.put("additional_info", document.getAdditionalInfo());
+        contentValues.put("date_from", document.getDate());
+        contentValues.put("date_to", document.getExpiryDate());
+        db.update(CAR_SERVICE_TABLE, contentValues, "car_id = ?", new String[]{String.valueOf(id)});
         db.close();
     }
 }

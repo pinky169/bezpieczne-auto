@@ -1,6 +1,5 @@
 package patryk.bezpieczneauto;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -90,11 +89,6 @@ public class MainActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CarDataFragment()).commit();
         } else if (id == R.id.nav_replacements) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ReplacementsFragment()).commit();
-        } else if (id == R.id.nav_share) {
-            // Udostępnianie danych pojazdu w jakimś spoko formacie
-            //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ShareCarDataFragment()).commit();
-            Intent intent = new Intent(MainActivity.this, TextRecognition.class);
-            startActivity(intent);
         } else if (id == R.id.nav_documents) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DocumentsFragment()).commit();
         } else if (id == R.id.nav_localization) {

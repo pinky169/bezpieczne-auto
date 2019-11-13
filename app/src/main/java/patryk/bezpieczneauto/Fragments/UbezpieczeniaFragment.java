@@ -1,40 +1,64 @@
 package patryk.bezpieczneauto.Fragments;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Objects;
 
 import patryk.bezpieczneauto.Adapters.DocumentsListAdapter;
+import patryk.bezpieczneauto.Database.DBHelper;
+import patryk.bezpieczneauto.Interfaces.Documents;
 import patryk.bezpieczneauto.Objects.Document;
 import patryk.bezpieczneauto.R;
 
-public class UbezpieczeniaFragment extends Fragment {
+public class UbezpieczeniaFragment extends Fragment implements Documents {
 
     private ArrayList<Document> documents = new ArrayList<>();
     private ListView listView;
     private DocumentsListAdapter documentsListAdapter;
+    private FloatingActionButton fab;
+    private DBHelper dbHelper;
+    private ArrayList<String> allCars;
+    private Spinner chooseCarSpinner;
+    private int spinnerSelectedItemPosition;
+
+    public static UbezpieczeniaFragment newInstance(String text) {
+
+        UbezpieczeniaFragment f = new UbezpieczeniaFragment();
+        Bundle b = new Bundle();
+        b.putString("msg", text);
+
+        f.setArguments(b);
+
+        return f;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Document doc = new Document(
-                "Seat Ibiza III",
-                "UBEZPIECZENIE 2019",
-                "PZU UBEZPIECZENIA",
-                "16.08.2019",
-                "15.08.2020"
-        );
-
-        for (int i=0; i<10; i++)
-            documents.add(doc);
+        dbHelper = new DBHelper(getContext());
+        documents = dbHelper.getInsurances();
     }
 
     @Nullable
@@ -46,17 +70,176 @@ public class UbezpieczeniaFragment extends Fragment {
         listView = rootView.findViewById(R.id.ubezpieczenia_listview_id);
         listView.setAdapter(documentsListAdapter);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                editDocumentDialog(position + 1);
+            }
+        });
+
+        fab = rootView.findViewById(R.id.ubezpieczenia_fab);
+        fab.setOnClickListener(v -> newDocumentDialog());
+
+
         return rootView;
     }
 
-    public static UbezpieczeniaFragment newInstance(String text) {
+    public void newDocumentDialog() {
+        LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getActivity());
+        View view = layoutInflaterAndroid.inflate(R.layout.dialog_add_document, null);
 
-        UbezpieczeniaFragment f = new UbezpieczeniaFragment();
-        Bundle b = new Bundle();
-        b.putString("msg", text);
+        AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(getContext());
+        alertDialogBuilderUserInput.setView(view);
 
-        f.setArguments(b);
+        final EditText policy = view.findViewById(R.id.document_info_input);
+        final EditText additionalInfo = view.findViewById(R.id.document_additional_info_input);
+        final EditText dateFrom = view.findViewById(R.id.document_date_input);
+        final EditText dateTo = view.findViewById(R.id.document_expiry_date_input);
 
-        return f;
+        // Ustawiam proponowaną datę jako dzisiejszą i przyszły rok w EditTextach
+        Calendar calendar = Calendar.getInstance();
+        Date currentDate = calendar.getTime();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+        String dateString = getResources().getString(R.string.date_hint, dateFormat.format(currentDate));
+        dateFrom.setText(dateString);
+        calendar.add(Calendar.YEAR, 1);
+        Date nextYear = calendar.getTime();
+        String nextYearString = getResources().getString(R.string.date_hint, dateFormat.format(nextYear));
+        dateTo.setText(nextYearString);
+
+        // Lista z samymi markami
+        allCars = dbHelper.getCarsNames();
+
+        // Adapter spinnera wypełniany jest markami aut z listy allCars
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_spinner_item, allCars);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Spinner z markami aut
+        chooseCarSpinner = view.findViewById(R.id.document_choose_car_spinner);
+        chooseCarSpinner.setAdapter(spinnerAdapter);
+        chooseCarSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                // Pozycja wybranego elementu na spinnerze
+                spinnerSelectedItemPosition = chooseCarSpinner.getSelectedItemPosition();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+                Toast.makeText(getContext(), "Musisz wybrać auto!", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        alertDialogBuilderUserInput
+                .setCancelable(false)
+                .setPositiveButton("DODAJ", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogBox, int id) {
+
+                        // Wyświetl wiadomość jeżeli któreś pole jest puste
+                        if (TextUtils.isEmpty(policy.getText().toString()) ||
+                                TextUtils.isEmpty(additionalInfo.getText().toString()) ||
+                                TextUtils.isEmpty(dateFrom.getText().toString()) ||
+                                TextUtils.isEmpty(dateTo.getText().toString())) {
+                            Toast.makeText(getContext(), "Musisz wypełnić każde pole!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        if (!allCars.isEmpty()) {
+                            Document mDocument = new Document(
+                                    dbHelper.getCar(spinnerSelectedItemPosition + 1).getMarka() + " " + dbHelper.getCar(spinnerSelectedItemPosition + 1).getModel(),
+                                    "Numer polisy: " + policy.getText().toString(),
+                                    additionalInfo.getText().toString(),
+                                    dateFrom.getText().toString(),
+                                    dateTo.getText().toString()
+                            );
+
+                            dbHelper.insertInsurance(spinnerSelectedItemPosition + 1, mDocument);
+                            documents.add(mDocument);
+                            documentsListAdapter.notifyDataSetChanged();
+
+                            Toast.makeText(getContext(), "Dodano nowy dokument", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getContext(), "Najpierw dodaj nowe auto w zakładce \nDane pojazdu", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                })
+                .setNegativeButton("ANULUJ",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogBox, int id) {
+                                dialogBox.cancel();
+                            }
+                        });
+
+        final AlertDialog alertDialog = alertDialogBuilderUserInput.create();
+        alertDialog.show();
+    }
+
+    @Override
+    public void editDocumentDialog(int id) {
+
+        LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getContext());
+        View view = layoutInflaterAndroid.inflate(R.layout.dialog_add_document, null);
+
+        final EditText policy = view.findViewById(R.id.document_info_input);
+        final EditText additionalInfo = view.findViewById(R.id.document_additional_info_input);
+        final EditText dateFrom = view.findViewById(R.id.document_date_input);
+        final EditText dateTo = view.findViewById(R.id.document_expiry_date_input);
+
+        final Document currentDocument = dbHelper.getInsurance(id);
+        policy.setText(currentDocument.getPolicy());
+        additionalInfo.setText(currentDocument.getAdditionalInfo());
+        dateFrom.setText(currentDocument.getDate());
+        dateTo.setText(currentDocument.getExpiryDate());
+
+        AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+        alertDialogBuilderUserInput.setView(view);
+
+        alertDialogBuilderUserInput
+                .setCancelable(false)
+                .setPositiveButton("ZAPISZ", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogBox, int dialogID) {
+
+                                // Wyświetl wiadomość jeżeli któreś pole jest puste
+                                if (TextUtils.isEmpty(policy.getText().toString()) ||
+                                        TextUtils.isEmpty(additionalInfo.getText().toString()) ||
+                                        TextUtils.isEmpty(dateFrom.getText().toString()) ||
+                                        TextUtils.isEmpty(dateTo.getText().toString())) {
+                                    Toast.makeText(getContext(), "Musisz wypełnić każde pole!", Toast.LENGTH_SHORT).show();
+                                } else {
+
+
+                                    Document updatedDoc = new Document(
+                                            currentDocument.getAuto(),
+                                            policy.getText().toString(),
+                                            additionalInfo.getText().toString(),
+                                            dateFrom.getText().toString(),
+                                            dateTo.getText().toString()
+                                    );
+
+
+                                    dbHelper.updateInsurance(id, updatedDoc);
+                                    documents.set(id - 1, updatedDoc);
+                                    documentsListAdapter.notifyDataSetChanged();
+                                    dbHelper.close();
+
+                                    Toast.makeText(getContext(), "Zapisano dane ubezpieczenia dla auta " + currentDocument.getAuto(), Toast.LENGTH_LONG).show();
+                                }
+
+                            }
+                        }
+                )
+                .setNegativeButton("ANULUJ",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogBox, int id) {
+                                dialogBox.cancel();
+                            }
+                        });
+
+        final AlertDialog alertDialog = alertDialogBuilderUserInput.create();
+        alertDialog.show();
+
     }
 }

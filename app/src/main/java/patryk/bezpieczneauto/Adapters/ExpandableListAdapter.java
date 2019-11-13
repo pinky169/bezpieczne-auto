@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import patryk.bezpieczneauto.Database.DBHelper;
-import patryk.bezpieczneauto.Interfaces.mDialogInterface;
+import patryk.bezpieczneauto.Interfaces.Cars;
 import patryk.bezpieczneauto.Objects.Car;
 import patryk.bezpieczneauto.Objects.CarPart;
 import patryk.bezpieczneauto.R;
@@ -27,18 +27,15 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private Context context;
     private int groupLayoutResourceId;
     private int childLayoutResourceId;
-    private mDialogInterface dialogInterface;
+    private Cars mInterface;
     private DBHelper dbHelper;
-
-    public ExpandableListAdapter(Context context, mDialogInterface dialogInterface, DBHelper dbHelper, int groupLayoutResourceId, int childLayoutResourceId, ArrayList<Car> cars, HashMap<Car, List<CarPart>> carParts) {
-        this.cars = cars;
-        this.carParts = carParts;
-        this.context = context;
-        this.groupLayoutResourceId = groupLayoutResourceId;
-        this.childLayoutResourceId = childLayoutResourceId;
-        this.dialogInterface = dialogInterface;
-        this.dbHelper = dbHelper;
-    }
+    private View.OnClickListener myClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            int position = (Integer) v.getTag() + 1;
+            mInterface.editDialog(position);
+        }
+    };
 
     static class CarViewHolder
     {
@@ -139,13 +136,15 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         return row;
     }
 
-    private View.OnClickListener myClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            int position = (Integer) v.getTag() + 1;
-            dialogInterface.editCarDialog(position);
-        }
-    };
+    public ExpandableListAdapter(Context context, Cars mInterface, DBHelper dbHelper, int groupLayoutResourceId, int childLayoutResourceId, ArrayList<Car> cars, HashMap<Car, List<CarPart>> carParts) {
+        this.cars = cars;
+        this.carParts = carParts;
+        this.context = context;
+        this.groupLayoutResourceId = groupLayoutResourceId;
+        this.childLayoutResourceId = childLayoutResourceId;
+        this.mInterface = mInterface;
+        this.dbHelper = dbHelper;
+    }
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean b, View view, ViewGroup parent) {
