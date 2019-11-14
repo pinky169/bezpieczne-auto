@@ -85,9 +85,8 @@ public class DBHelper extends SQLiteOpenHelper {
         );
 
         db.execSQL("CREATE TABLE " + CAR_PHOTO_TABLE + " (" +
-                CAR_PHOTO_ID + " integer, " +
-                CAR_PHOTO + " TEXT, " +
-                "FOREIGN KEY (" + CAR_PHOTO_ID + ") REFERENCES " + CARS_TABLE_NAME + "(" + CARS_COLUMN_ID + "));"
+                CAR_PHOTO_ID + " integer primary key autoincrement, " +
+                CAR_PHOTO + " TEXT);"
         );
 
         db.execSQL("CREATE TABLE " + INSURANCE_TABLE + " (" +
@@ -206,28 +205,25 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM mainCarPhoto", null);
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
-            db.update(CAR_PHOTO_TABLE, contentValues, "photo_id=?",
-                    new String[]{String.valueOf(cursor.getString(0))});
+            db.update(CAR_PHOTO_TABLE, contentValues, "photo_id=?", new String[]{String.valueOf(cursor.getString(0))});
             cursor.close();
         } else {
             db.insert(CAR_PHOTO_TABLE, null, contentValues);
         }
+        cursor.close();
         db.close();
     }
 
     public String getCarPhoto() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT photo FROM mainCarPhoto", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM mainCarPhoto", null);
 
         if (cursor != null && cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            String photo = cursor.getString(cursor.getColumnIndex("photo"));
-            cursor.close();
 
-            return photo;
-        }
-        db.close();
-        return null;
+            cursor.moveToFirst();
+            return cursor.getString(cursor.getColumnIndex("photo"));
+        } else
+            return null;
     }
 
     public void insertPart(int part_id, String part_name, String additional_info, String replacement_date, String price) {
@@ -246,20 +242,20 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<CarPart> array_list = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("select * from parts INNER join cars on cars.id=parts.part_id AND cars.id=?", new String[]{String.valueOf(id)});
+        Cursor cursor = db.rawQuery("select * from parts INNER join cars on cars.id=parts.part_id AND cars.id=?", new String[]{String.valueOf(id)});
 
-        if (res.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             do {
                 array_list.add(new CarPart(
-                        res.getString(res.getColumnIndex("new_part_name")),
-                        res.getString(res.getColumnIndex("additional_info")),
-                        res.getString(res.getColumnIndex("replacement_date")),
-                        res.getString(res.getColumnIndex("price")),
+                        cursor.getString(cursor.getColumnIndex("new_part_name")),
+                        cursor.getString(cursor.getColumnIndex("additional_info")),
+                        cursor.getString(cursor.getColumnIndex("replacement_date")),
+                        cursor.getString(cursor.getColumnIndex("price")),
                         R.drawable.ic_menu_manage
                 ));
-            } while (res.moveToNext());
+            } while (cursor.moveToNext());
         }
-        res.close();
+        cursor.close();
         db.close();
         return array_list;
     }

@@ -5,11 +5,8 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,14 +22,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
-import androidx.exifinterface.media.ExifInterface;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 import patryk.bezpieczneauto.Database.DBHelper;
 import patryk.bezpieczneauto.Interfaces.Cars;
@@ -64,15 +58,15 @@ public class CarDataFragment extends Fragment implements Cars {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_car_data, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_car_data, container, false);
 
-        name = view.findViewById(R.id.car_name);
-        model = view.findViewById(R.id.car_model);
-        year = view.findViewById(R.id.car_prod_date);
-        capacity = view.findViewById(R.id.car_engine_capacity);
-        power = view.findViewById(R.id.car_power);
-        img = view.findViewById(R.id.car_image);
-        imgButton = view.findViewById(R.id.car_image_button);
+        name = rootView.findViewById(R.id.car_name);
+        model = rootView.findViewById(R.id.car_model);
+        year = rootView.findViewById(R.id.car_prod_date);
+        capacity = rootView.findViewById(R.id.car_engine_capacity);
+        power = rootView.findViewById(R.id.car_power);
+        img = rootView.findViewById(R.id.car_image);
+        imgButton = rootView.findViewById(R.id.car_image_button);
 
         // Listeners
         img.setOnClickListener(requestCarImage);
@@ -90,33 +84,32 @@ public class CarDataFragment extends Fragment implements Cars {
             Toast.makeText(getContext(), "Dodaj nowe auto główne przyciskiem po prawej stronie :)", Toast.LENGTH_LONG).show();
         }
 
-        fab = view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addDialog();
-            }
-        });
+        fab = rootView.findViewById(R.id.fab);
+        fab.setOnClickListener(view -> addDialog());
 
         // Załaduj zdjęcie auta z bazy danych
         String photoString = dbHelper.getCarPhoto();
         if(photoString != null) {
             Uri photoUri = Uri.parse(photoString);
-            Bitmap carImage = rotateImage(photoUri);
-            img.setImageBitmap(carImage);
+            Glide.with(CarDataFragment.this)
+                    .load(photoUri)
+                    .into(img);
+            img.setTag("img-from-phone");
+            imgButton.setTag("img-from-phone");
         } else {
             img.setImageResource(R.drawable.ic_camera_add);
+            img.setTag("R.drawable.ic_camera_add");
             imgButton.setVisibility(View.GONE);
         }
 
-        if(img.getDrawable().getConstantState() == getResources().getDrawable(R.drawable.ic_camera_add).getConstantState())
+        if (img.getTag() != imgButton.getTag())
             imgButton.setVisibility(View.GONE);
         else {
             img.setOnClickListener(null);
             imgButton.setVisibility(View.VISIBLE);
         }
 
-        return view;
+        return rootView;
     }
 
     @Override
@@ -125,7 +118,7 @@ public class CarDataFragment extends Fragment implements Cars {
         if (requestCode == CAMERA_PERMISSION_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(getContext(), "Uzyskano dostęp do multimediów", Toast.LENGTH_LONG).show();
-                Intent photoPickerIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                 photoPickerIntent.setType("image/*");
                 startActivityForResult(photoPickerIntent, CAMERA_REQUEST);
             } else {
@@ -140,8 +133,10 @@ public class CarDataFragment extends Fragment implements Cars {
             if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK)
             {
                 final Uri imageUri = data.getData();
-                Bitmap selectedImage = rotateImage(imageUri);
-                img.setImageBitmap(selectedImage);
+                Glide.with(CarDataFragment.this)
+                        .load(imageUri)
+                        .fitCenter()
+                        .into(img);
                 img.setOnClickListener(null);
                 imgButton.setVisibility(View.VISIBLE);
                 dbHelper.insertCarPhoto(imageUri);
@@ -165,9 +160,10 @@ public class CarDataFragment extends Fragment implements Cars {
         }
     };
 
+    /*
     public Bitmap rotateImage(Uri imgUri) {
         try {
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imgUri);
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(Objects.requireNonNull(getContext()).getContentResolver(), imgUri);
             final InputStream imageStream = getContext().getContentResolver().openInputStream(imgUri);
             ExifInterface exif = new ExifInterface(imageStream);
             int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
@@ -189,6 +185,8 @@ public class CarDataFragment extends Fragment implements Cars {
 
         return null;
     }
+
+    */
 
     public void addDialog() {
 

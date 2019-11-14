@@ -1,9 +1,9 @@
 package patryk.bezpieczneauto;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +13,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 
+import patryk.bezpieczneauto.Database.DBHelper;
 import patryk.bezpieczneauto.Fragments.CarDataFragment;
 import patryk.bezpieczneauto.Fragments.DocumentsFragment;
 import patryk.bezpieczneauto.Fragments.ReplacementsFragment;
@@ -21,12 +22,16 @@ import patryk.bezpieczneauto.Fragments.ShareLocalizationFragment;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    DBHelper dbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        dbHelper = new DBHelper(getBaseContext());
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -75,7 +80,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         if (id == R.id.action_about) {
-            Toast.makeText(getApplicationContext(), "pinkowski.patryk@gmail.com\ngithub.com/pinky169", Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext(), "pinkowski.patryk@gmail.com\ngithub.com/pinky169", Toast.LENGTH_LONG).show();
             return true;
         }
 
@@ -95,6 +100,15 @@ public class MainActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DocumentsFragment()).commit();
         } else if (id == R.id.nav_localization) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ShareLocalizationFragment()).commit();
+        } else if (id == R.id.nav_share) {
+
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+            sendIntent.setType("text/plain");
+
+            Intent shareIntent = Intent.createChooser(sendIntent, null);
+            startActivity(shareIntent);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
