@@ -12,6 +12,8 @@
     <string name="menu_nav_replacements">Moje wymiany</string>
     <string name="menu_nav_share">Wyślij dane pojazdu</string>
     <string name="share">Udostępnij</string>
+    <string name="insurance">Ubezpieczenia</string>
+    <string name="car_service">Przeglądy</string>
 
     <string name="car_data_txt">Lista wymienianych części:</string>
     <string name="car_specification">Specyfikacja auta:</string>
@@ -36,12 +38,22 @@
     <string name="part_date_adapter_placeholder">Data wymiany: %s</string>
     <string name="part_price_adapter_placeholder">Cena części: %szł</string>
     <string name="domyslne_auto_tooltip_text">Domyślne auto</string>
-    <string name="wybierz_auto">Wybierz auto:</string>
+    <string name="wybierz_auto">Auto:</string>
     <string name="nowa_czesc">Nowa część:</string>
     <string name="cena_czesci">Cena części:</string>
     <string name="data_wymiany">Data wymiany:</string>
-    <string name="dodatkowe_informacje">Dodatkowe informacje:</string>
+    <string name="additional_info_txt">Dodatkowe informacje:</string>
     <string name="menu_nav_dokumenty">Dokumenty</string>
     <string name="menu_nav_udostepnij_swoja_lokalizacje">Udostępnij swoją lokalizację</string>
+    <string name="policy_number">Numer polisy:</string>
+    <string name="policy_hint">Np. 2019-815456181</string>
+    <string name="additional_info_hint">Np. Ubezpieczyciel: AXA</string>
+    <string name="document_date_from_txt">Od kiedy obowiązuje ubezpieczenie:</string>
+    <string name="document_date_to_txt">Do kiedy obowiązuje ubezpieczenie:</string>
+    <string name="car_registration_number">Numer rejestracyjny</string>
+    <string name="registration_number">Numer rejestracyjny:</string>
+    <string name="car_mileage">Przebieg auta podczas badania:</string>
+    <string name="car_service_date_from">Data badania technicznego:</string>
+    <string name="car_service_date_to">Badanie techniczne ważne do:</string>
 
 </resources>

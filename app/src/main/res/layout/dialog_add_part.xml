@@ -70,7 +70,7 @@
         android:fontFamily="sans-serif-medium"
         android:textAllCaps="true"
         android:lineSpacingExtra="8sp"
-        android:text="@string/dodatkowe_informacje"
+        android:text="@string/additional_info_txt"
         android:textColor="#000"
         android:textSize="14sp"
         android:textStyle="normal" />

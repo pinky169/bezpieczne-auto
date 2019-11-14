@@ -40,6 +40,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String CAR_PHOTO = "photo";
 
     private static final String INSURANCE_TABLE = "insurance";
+    private static final String INSURANCE_ID = "insurance_id";
     private static final String INSURANCE_CAR_ID = "car_id";
     private static final String INSURANCE_CAR_NAME = "car";
     private static final String INSURANCE_POLICY_NR = "policy";
@@ -48,10 +49,11 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String INSURANCE_DATE_TO = "date_to";
 
     private static final String CAR_SERVICE_TABLE = "service";
+    private static final String CAR_SERVICE_ID = "service_id";
     private static final String CAR_SERVICE_CAR_ID = "car_id";
     private static final String CAR_SERVICE_CAR_NAME = "car";
-    private static final String CAR_SERVICE_INFO = "info";
-    private static final String CAR_SERVICE_ADDITIONAL_INFO = "additional_info";
+    private static final String CAR_SERVICE_REG_NR = "reg_nr";
+    private static final String CAR_SERVICE_MILEAGE = "mileage";
     private static final String CAR_SERVICE_DATE_FROM = "date_from";
     private static final String CAR_SERVICE_DATE_TO = "date_to";
 
@@ -62,7 +64,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        db.execSQL("CREATE TABLE " + CARS_TABLE_NAME +   " (" +
+        db.execSQL("CREATE TABLE " + CARS_TABLE_NAME + " (" +
                 CARS_COLUMN_ID + " INTEGER primary key autoincrement, " +
                 CARS_COLUMN_MARKA + " TEXT NOT NULL, " +
                 CARS_COLUMN_MODEL + " TEXT NOT NULL, " +
@@ -73,22 +75,23 @@ public class DBHelper extends SQLiteOpenHelper {
                 CARS_COLUMN_IS_MAIN_CAR + " INTEGER DEFAULT 0);"
         );
 
-        db.execSQL("CREATE TABLE " + PARTS_TABLE_NAME +   " (" +
+        db.execSQL("CREATE TABLE " + PARTS_TABLE_NAME + " (" +
                 PARTS_COLUMN_ID + " integer, " +
                 PARTS_COLUMN_NEW_PART_NAME + " TEXT NOT NULL, " +
                 PARTS_COLUMN_ADDITIONAL_INFO + " TEXT, " +
                 PARTS_COLUMN_REPLACEMENT_DATE + " TEXT NOT NULL, " +
                 PARTS_COLUMN_PRICE + " TEXT NOT NULL, " +
-                "FOREIGN KEY (" + PARTS_COLUMN_ID +") REFERENCES " + CARS_TABLE_NAME +"("+ CARS_COLUMN_ID +"));"
+                "FOREIGN KEY (" + PARTS_COLUMN_ID + ") REFERENCES " + CARS_TABLE_NAME + "(" + CARS_COLUMN_ID + "));"
         );
 
-        db.execSQL("CREATE TABLE " + CAR_PHOTO_TABLE +   " (" +
+        db.execSQL("CREATE TABLE " + CAR_PHOTO_TABLE + " (" +
                 CAR_PHOTO_ID + " integer, " +
                 CAR_PHOTO + " TEXT, " +
                 "FOREIGN KEY (" + CAR_PHOTO_ID + ") REFERENCES " + CARS_TABLE_NAME + "(" + CARS_COLUMN_ID + "));"
         );
 
         db.execSQL("CREATE TABLE " + INSURANCE_TABLE + " (" +
+                INSURANCE_ID + " integer primary key autoincrement, " +
                 INSURANCE_CAR_ID + " integer, " +
                 INSURANCE_CAR_NAME + " TEXT NOT NULL, " +
                 INSURANCE_POLICY_NR + " TEXT NOT NULL, " +
@@ -99,10 +102,11 @@ public class DBHelper extends SQLiteOpenHelper {
         );
 
         db.execSQL("CREATE TABLE " + CAR_SERVICE_TABLE + " (" +
+                CAR_SERVICE_ID + " integer primary key autoincrement, " +
                 CAR_SERVICE_CAR_ID + " integer, " +
                 CAR_SERVICE_CAR_NAME + " TEXT NOT NULL, " +
-                CAR_SERVICE_INFO + " TEXT NOT NULL, " +
-                CAR_SERVICE_ADDITIONAL_INFO + " TEXT NOT NULL, " +
+                CAR_SERVICE_REG_NR + " TEXT NOT NULL, " +
+                CAR_SERVICE_MILEAGE + " TEXT NOT NULL, " +
                 CAR_SERVICE_DATE_FROM + " TEXT NOT NULL, " +
                 CAR_SERVICE_DATE_TO + " TEXT NOT NULL, " +
                 "FOREIGN KEY (" + CAR_SERVICE_CAR_ID + ") REFERENCES " + CARS_TABLE_NAME + "(" + CARS_COLUMN_ID + "));"
@@ -155,9 +159,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Car getMainCar() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor =  db.rawQuery( "SELECT * FROM cars WHERE glowne=?", new String[]{String.valueOf(1)});
+        Cursor cursor = db.rawQuery("SELECT * FROM cars WHERE glowne=?", new String[]{String.valueOf(1)});
 
-        if (cursor != null && cursor.getCount()>0) {
+        if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
 
             Car mainCar = new Car(
@@ -182,8 +186,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public boolean isMainCar(long id) {
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor =  db.rawQuery( "SELECT glowne FROM cars WHERE id=?", new String[]{String.valueOf(id+1)});
-        if (cursor != null && cursor.getCount()>0) {
+        Cursor cursor = db.rawQuery("SELECT glowne FROM cars WHERE id=?", new String[]{String.valueOf(id + 1)});
+        if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
             int isMain = cursor.getInt(cursor.getColumnIndex("glowne"));
             cursor.close();
@@ -200,8 +204,8 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put("photo", imgUri.toString());
         Cursor cursor = db.rawQuery("SELECT * FROM mainCarPhoto", null);
-        if (cursor != null && cursor.getCount()>0) {
-             cursor.moveToFirst();
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
             db.update(CAR_PHOTO_TABLE, contentValues, "photo_id=?",
                     new String[]{String.valueOf(cursor.getString(0))});
             cursor.close();
@@ -213,9 +217,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public String getCarPhoto() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor =  db.rawQuery( "SELECT photo FROM mainCarPhoto", null);
+        Cursor cursor = db.rawQuery("SELECT photo FROM mainCarPhoto", null);
 
-        if (cursor != null && cursor.getCount()>0) {
+        if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
             String photo = cursor.getString(cursor.getColumnIndex("photo"));
             cursor.close();
@@ -242,7 +246,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<CarPart> array_list = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from parts INNER join cars on cars.id=parts.part_id AND cars.id=?", new String[]{String.valueOf(id)});
+        Cursor res = db.rawQuery("select * from parts INNER join cars on cars.id=parts.part_id AND cars.id=?", new String[]{String.valueOf(id)});
 
         if (res.moveToFirst()) {
             do {
@@ -262,7 +266,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Car getCar(long id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor =  db.rawQuery( "select * from cars where id=?", new String[]{String.valueOf(id)});
+        Cursor cursor = db.rawQuery("select * from cars where id=?", new String[]{String.valueOf(id)});
 
         if (cursor != null) {
 
@@ -284,7 +288,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public CarPart getPart(long id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor =  db.rawQuery( "select * from parts where part_id="+id+"", null );
+        Cursor cursor = db.rawQuery("select * from parts where part_id=" + id + "", null);
 
         if (cursor != null) {
 
@@ -306,7 +310,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<Car> array_list = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor =  db.rawQuery( "select * from cars", null );
+        Cursor cursor = db.rawQuery("select * from cars", null);
 
         if (cursor.moveToFirst()) {
             do {
@@ -330,7 +334,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<CarPart> array_list = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from parts", null );
+        Cursor res = db.rawQuery("select * from parts", null);
 
         if (res.moveToFirst()) {
             do {
@@ -352,11 +356,15 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<String> array_list = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select marka from cars", null );
+        Cursor res = db.rawQuery("select marka, model from cars", null);
 
         if (res.moveToFirst()) {
             do {
-                array_list.add(res.getString(res.getColumnIndex("marka")));
+                array_list.add(
+                        res.getString(res.getColumnIndex("marka")).toUpperCase()
+                                + " "
+                                + res.getString(res.getColumnIndex("model")).toUpperCase()
+                );
             } while (res.moveToNext());
         }
         res.close();
@@ -396,7 +404,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put("car_id", car_id);
         contentValues.put("car", insurance.getAuto());
-        contentValues.put("policy", insurance.getPolicy());
+        contentValues.put("policy", insurance.getInfo());
         contentValues.put("additional_info", insurance.getAdditionalInfo());
         contentValues.put("date_from", insurance.getDate());
         contentValues.put("date_to", insurance.getExpiryDate());
@@ -404,10 +412,10 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public Document getInsurance(int car_id) {
+    public Document getInsurance(int id) {
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from cars inner join insurance on cars.id=? and cars.id=insurance.car_id", new String[]{String.valueOf(car_id)});
+        Cursor cursor = db.rawQuery("select * from insurance where insurance.insurance_id=?", new String[]{String.valueOf(id)});
 
         if (cursor != null) {
 
@@ -450,36 +458,36 @@ public class DBHelper extends SQLiteOpenHelper {
     public void updateInsurance(int id, Document document) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("policy", document.getPolicy());
+        contentValues.put("policy", document.getInfo());
         contentValues.put("additional_info", document.getAdditionalInfo());
         contentValues.put("date_from", document.getDate());
         contentValues.put("date_to", document.getExpiryDate());
-        db.update(INSURANCE_TABLE, contentValues, "car_id = ?", new String[]{String.valueOf(id)});
+        db.update(INSURANCE_TABLE, contentValues, "insurance_id = ?", new String[]{String.valueOf(id)});
         db.close();
     }
 
-    public void insertCarService(int car_id, String car_name, String policy, String additional_info, String dateFrom, String dateTo) {
+    public void insertCarService(int car_id, String car_name, String reg_nr, String mileage, String dateFrom, String dateTo) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("car_id", car_id);
         contentValues.put("car", car_name);
-        contentValues.put("info", policy);
-        contentValues.put("additional_info", additional_info);
+        contentValues.put("reg_nr", reg_nr);
+        contentValues.put("mileage", mileage);
         contentValues.put("date_from", dateFrom);
         contentValues.put("date_to", dateTo);
         db.insert(CAR_SERVICE_TABLE, null, contentValues);
         db.close();
     }
 
-    public void insertCarService(int car_id, Document insurance) {
+    public void insertCarService(int car_id, Document service) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("car_id", car_id);
-        contentValues.put("car", insurance.getAuto());
-        contentValues.put("info", insurance.getPolicy());
-        contentValues.put("additional_info", insurance.getAdditionalInfo());
-        contentValues.put("date_from", insurance.getDate());
-        contentValues.put("date_to", insurance.getExpiryDate());
+        contentValues.put("car", service.getAuto());
+        contentValues.put("reg_nr", service.getInfo());
+        contentValues.put("mileage", service.getAdditionalInfo());
+        contentValues.put("date_from", service.getDate());
+        contentValues.put("date_to", service.getExpiryDate());
         db.insert(CAR_SERVICE_TABLE, null, contentValues);
         db.close();
     }
@@ -487,15 +495,15 @@ public class DBHelper extends SQLiteOpenHelper {
     public Document getCarService(int car_id) {
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from cars inner join service on cars.id=? and cars.id=service.car_id", new String[]{String.valueOf(car_id)});
+        Cursor cursor = db.rawQuery("select * from service where service.service_id=?", new String[]{String.valueOf(car_id)});
 
         if (cursor != null) {
 
             cursor.moveToFirst();
             return new Document(
                     cursor.getString(cursor.getColumnIndex("car")),
-                    cursor.getString(cursor.getColumnIndex("info")),
-                    cursor.getString(cursor.getColumnIndex("additional_info")),
+                    cursor.getString(cursor.getColumnIndex("reg_nr")),
+                    cursor.getString(cursor.getColumnIndex("mileage")),
                     cursor.getString(cursor.getColumnIndex("date_from")),
                     cursor.getString(cursor.getColumnIndex("date_to"))
 
@@ -509,14 +517,14 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<Document> array_list = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from insurance", null);
+        Cursor cursor = db.rawQuery("select * from service", null);
 
         if (cursor.moveToFirst()) {
             do {
                 array_list.add(new Document(
                         cursor.getString(cursor.getColumnIndex("car")),
-                        cursor.getString(cursor.getColumnIndex("policy")),
-                        cursor.getString(cursor.getColumnIndex("additional_info")),
+                        cursor.getString(cursor.getColumnIndex("reg_nr")),
+                        cursor.getString(cursor.getColumnIndex("mileage")),
                         cursor.getString(cursor.getColumnIndex("date_from")),
                         cursor.getString(cursor.getColumnIndex("date_to"))
                 ));
@@ -530,11 +538,11 @@ public class DBHelper extends SQLiteOpenHelper {
     public void updateCarService(int id, Document document) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("info", document.getPolicy());
-        contentValues.put("additional_info", document.getAdditionalInfo());
+        contentValues.put("reg_nr", document.getInfo());
+        contentValues.put("mileage", document.getAdditionalInfo());
         contentValues.put("date_from", document.getDate());
         contentValues.put("date_to", document.getExpiryDate());
-        db.update(CAR_SERVICE_TABLE, contentValues, "car_id = ?", new String[]{String.valueOf(id)});
+        db.update(CAR_SERVICE_TABLE, contentValues, "service_id = ?", new String[]{String.valueOf(id)});
         db.close();
     }
 }

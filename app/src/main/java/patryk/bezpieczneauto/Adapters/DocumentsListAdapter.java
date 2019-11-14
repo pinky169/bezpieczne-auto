@@ -47,10 +47,10 @@ public class DocumentsListAdapter extends ArrayAdapter<Document> {
 
             holder = new DocumentViewHolder();
             holder.carName = row.findViewById(R.id.document_car_name);
-            holder.docInfo = row.findViewById(R.id.document_info);
-            holder.docAdditionalInfo = row.findViewById(R.id.document_additional_info);
-            holder.docDate = row.findViewById(R.id.document_date);
-            holder.docExpiryDate = row.findViewById(R.id.document_expiry_date);
+            holder.docInfo = row.findViewById(R.id.insurance_policy);
+            holder.docAdditionalInfo = row.findViewById(R.id.insurance_additional_info);
+            holder.docDate = row.findViewById(R.id.insurance_date);
+            holder.docExpiryDate = row.findViewById(R.id.insurance_expiry_date);
 
             row.setTag(holder);
         }
@@ -61,7 +61,7 @@ public class DocumentsListAdapter extends ArrayAdapter<Document> {
 
         Document document = getItem(position);
         holder.carName.setText(document.getAuto());
-        holder.docInfo.setText(document.getPolicy());
+        holder.docInfo.setText(document.getInfo());
         holder.docAdditionalInfo.setText(document.getAdditionalInfo());
         holder.docDate.setText(String.format("Od: %s", document.getDate()));
         holder.docExpiryDate.setText(String.format("Do: %s", document.getExpiryDate()));

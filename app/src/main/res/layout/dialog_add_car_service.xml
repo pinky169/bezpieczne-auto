@@ -19,7 +19,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/document_choose_car"
+                android:id="@+id/car_service_choose_car"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
@@ -31,7 +31,7 @@
                 android:textStyle="normal" />
 
             <Spinner
-                android:id="@+id/document_choose_car_spinner"
+                android:id="@+id/car_service_choose_car_spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
@@ -41,70 +41,70 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/document_info"
+            android:id="@+id/car_service_registration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:fontFamily="sans-serif-medium"
             android:lineSpacingExtra="8sp"
-            android:text="Podaj numer polisy"
+            android:text="@string/registration_number"
             android:textAllCaps="true"
             android:textColor="#000"
             android:textSize="14sp"
             android:textStyle="normal" />
 
         <EditText
-            android:id="@+id/document_info_input"
+            android:id="@+id/car_service_registration_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:gravity="top"
-            android:hint="Np. 2019-815456181"
+            android:hint="@string/car_registration_number"
             android:inputType="textCapSentences|textMultiLine|textCapCharacters"
             android:lines="2"
             android:textColorHint="@android:color/darker_gray"
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/document_additional_info"
+            android:id="@+id/car_service_mileage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:fontFamily="sans-serif-medium"
             android:lineSpacingExtra="8sp"
-            android:text="Dodatkowe informacje:"
+            android:text="@string/car_mileage"
             android:textAllCaps="true"
             android:textColor="#000"
             android:textSize="14sp"
             android:textStyle="normal" />
 
         <EditText
-            android:id="@+id/document_additional_info_input"
+            android:id="@+id/car_service_mileage_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
+            android:digits="0,1,2,3,4,5,6,7,8,9,."
             android:gravity="top"
-            android:hint="Np. Ubezpieczyciel: AXA"
             android:inputType="textCapSentences|textMultiLine|textCapCharacters"
             android:lines="2"
             android:textColorHint="@android:color/darker_gray"
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/document_date"
+            android:id="@+id/car_service_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:fontFamily="sans-serif-medium"
             android:lineSpacingExtra="8sp"
-            android:text="Od kiedy obowiązuje ubezpieczenie:"
+            android:text="@string/car_service_date_from"
             android:textAllCaps="true"
             android:textColor="#000"
             android:textSize="14sp"
             android:textStyle="normal" />
 
         <EditText
-            android:id="@+id/document_date_input"
+            android:id="@+id/car_service_date_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
@@ -116,20 +116,20 @@
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/document_expiry_date"
+            android:id="@+id/car_service_expiry_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:fontFamily="sans-serif-medium"
             android:lineSpacingExtra="8sp"
-            android:text="Do kiedy obowiązuje ubezpieczenie:"
+            android:text="@string/car_service_date_to"
             android:textAllCaps="true"
             android:textColor="#000"
             android:textSize="14sp"
             android:textStyle="normal" />
 
         <EditText
-            android:id="@+id/document_expiry_date_input"
+            android:id="@+id/car_service_expiry_date_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"

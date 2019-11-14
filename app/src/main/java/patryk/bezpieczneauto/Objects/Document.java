@@ -3,14 +3,14 @@ package patryk.bezpieczneauto.Objects;
 public class Document {
 
     private String auto;
-    private String policy;
+    private String info;
     private String additionalInfo;
     private String date;
     private String expiryDate;
 
-    public Document(String auto, String policy, String additionalInfo, String date, String expiryDate) {
+    public Document(String auto, String info, String additionalInfo, String date, String expiryDate) {
         this.auto = auto;
-        this.policy = policy;
+        this.info = info;
         this.additionalInfo = additionalInfo;
         this.date = date;
         this.expiryDate = expiryDate;
@@ -24,12 +24,12 @@ public class Document {
         this.auto = auto;
     }
 
-    public String getPolicy() {
-        return policy;
+    public String getInfo() {
+        return info;
     }
 
-    public void setPolicy(String info) {
-        this.policy = info;
+    public void setInfo(String info) {
+        this.info = info;
     }
 
     public String getAdditionalInfo() {

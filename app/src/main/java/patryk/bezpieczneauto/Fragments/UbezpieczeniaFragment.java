@@ -2,11 +2,6 @@ package patryk.bezpieczneauto.Fragments;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +12,13 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,6 +42,7 @@ public class UbezpieczeniaFragment extends Fragment implements Documents {
     private DBHelper dbHelper;
     private ArrayList<String> allCars;
     private Spinner chooseCarSpinner;
+    private ArrayAdapter<String> spinnerAdapter;
     private int spinnerSelectedItemPosition;
 
     public static UbezpieczeniaFragment newInstance(String text) {
@@ -65,9 +68,9 @@ public class UbezpieczeniaFragment extends Fragment implements Documents {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_ubezpieczenia, container, false);
-        documentsListAdapter = new DocumentsListAdapter(getContext(), R.layout.listview_item, documents);
-        listView = rootView.findViewById(R.id.ubezpieczenia_listview_id);
+        View rootView = inflater.inflate(R.layout.fragment_insurances, container, false);
+        documentsListAdapter = new DocumentsListAdapter(getContext(), R.layout.document_listview_item, documents);
+        listView = rootView.findViewById(R.id.insuurance_listview_id);
         listView.setAdapter(documentsListAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -77,7 +80,7 @@ public class UbezpieczeniaFragment extends Fragment implements Documents {
             }
         });
 
-        fab = rootView.findViewById(R.id.ubezpieczenia_fab);
+        fab = rootView.findViewById(R.id.insuurance_fab);
         fab.setOnClickListener(v -> newDocumentDialog());
 
 
@@ -86,15 +89,15 @@ public class UbezpieczeniaFragment extends Fragment implements Documents {
 
     public void newDocumentDialog() {
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getActivity());
-        View view = layoutInflaterAndroid.inflate(R.layout.dialog_add_document, null);
+        View view = layoutInflaterAndroid.inflate(R.layout.dialog_add_insurance, null);
 
         AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(getContext());
         alertDialogBuilderUserInput.setView(view);
 
-        final EditText policy = view.findViewById(R.id.document_info_input);
-        final EditText additionalInfo = view.findViewById(R.id.document_additional_info_input);
-        final EditText dateFrom = view.findViewById(R.id.document_date_input);
-        final EditText dateTo = view.findViewById(R.id.document_expiry_date_input);
+        final EditText policy = view.findViewById(R.id.insurance_policy_input);
+        final EditText additionalInfo = view.findViewById(R.id.insurance_additional_info_input);
+        final EditText dateFrom = view.findViewById(R.id.insurance_date_input);
+        final EditText dateTo = view.findViewById(R.id.insurance_expiry_date_input);
 
         // Ustawiam proponowaną datę jako dzisiejszą i przyszły rok w EditTextach
         Calendar calendar = Calendar.getInstance();
@@ -111,11 +114,11 @@ public class UbezpieczeniaFragment extends Fragment implements Documents {
         allCars = dbHelper.getCarsNames();
 
         // Adapter spinnera wypełniany jest markami aut z listy allCars
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_spinner_item, allCars);
+        spinnerAdapter = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_spinner_item, allCars);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         // Spinner z markami aut
-        chooseCarSpinner = view.findViewById(R.id.document_choose_car_spinner);
+        chooseCarSpinner = view.findViewById(R.id.insurance_choose_car_spinner);
         chooseCarSpinner.setAdapter(spinnerAdapter);
         chooseCarSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -181,15 +184,23 @@ public class UbezpieczeniaFragment extends Fragment implements Documents {
     public void editDocumentDialog(int id) {
 
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getContext());
-        View view = layoutInflaterAndroid.inflate(R.layout.dialog_add_document, null);
+        View view = layoutInflaterAndroid.inflate(R.layout.dialog_add_insurance, null);
 
-        final EditText policy = view.findViewById(R.id.document_info_input);
-        final EditText additionalInfo = view.findViewById(R.id.document_additional_info_input);
-        final EditText dateFrom = view.findViewById(R.id.document_date_input);
-        final EditText dateTo = view.findViewById(R.id.document_expiry_date_input);
+        final EditText policy = view.findViewById(R.id.insurance_policy_input);
+        final EditText additionalInfo = view.findViewById(R.id.insurance_additional_info_input);
+        final EditText dateFrom = view.findViewById(R.id.insurance_date_input);
+        final EditText dateTo = view.findViewById(R.id.insurance_expiry_date_input);
 
         final Document currentDocument = dbHelper.getInsurance(id);
-        policy.setText(currentDocument.getPolicy());
+
+        allCars = new ArrayList<>();
+        allCars.add(currentDocument.getAuto().toUpperCase());
+        spinnerAdapter = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_spinner_item, allCars);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        chooseCarSpinner = view.findViewById(R.id.insurance_choose_car_spinner);
+        chooseCarSpinner.setAdapter(spinnerAdapter);
+
+        policy.setText(currentDocument.getInfo());
         additionalInfo.setText(currentDocument.getAdditionalInfo());
         dateFrom.setText(currentDocument.getDate());
         dateTo.setText(currentDocument.getExpiryDate());

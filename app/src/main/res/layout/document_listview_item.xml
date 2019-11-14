@@ -18,7 +18,7 @@
 
 
     <TextView
-        android:id="@+id/document_info"
+        android:id="@+id/insurance_policy"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -28,21 +28,21 @@
         android:textColor="@android:color/black" />
 
     <TextView
-        android:id="@+id/document_additional_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:textAlignment="viewStart" />
-
-    <TextView
-        android:id="@+id/document_date"
+        android:id="@+id/insurance_additional_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:textAlignment="viewStart" />
 
     <TextView
-        android:id="@+id/document_expiry_date"
+        android:id="@+id/insurance_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textAlignment="viewStart" />
+
+    <TextView
+        android:id="@+id/insurance_expiry_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"

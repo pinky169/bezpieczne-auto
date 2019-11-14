@@ -2,13 +2,14 @@ package patryk.bezpieczneauto.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v7.widget.TooltipCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.TooltipCompat;
 
 import java.util.ArrayList;
 import java.util.HashMap;

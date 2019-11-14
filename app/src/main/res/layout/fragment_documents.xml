@@ -1,27 +1,42 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <android.support.v4.view.ViewPager
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryDark" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <ImageButton
         android:id="@+id/right_nav"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@null"
         android:layout_gravity="end"
+        android:background="@null"
         android:src="@drawable/ic_nav_arrow_right" />
 
     <ImageButton
         android:id="@+id/left_nav"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@null"
         android:layout_gravity="start"
+        android:background="@null"
         android:src="@drawable/ic_nav_arrow_left" />
 
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
