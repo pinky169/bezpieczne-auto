@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +18,7 @@ import patryk.bezpieczneauto.Database.DBHelper;
 import patryk.bezpieczneauto.Fragments.CarDataFragment;
 import patryk.bezpieczneauto.Fragments.DocumentsFragment;
 import patryk.bezpieczneauto.Fragments.ReplacementsFragment;
-import patryk.bezpieczneauto.Fragments.ShareLocalizationFragment;
+import patryk.bezpieczneauto.Objects.Car;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -80,7 +81,6 @@ public class MainActivity extends AppCompatActivity
         }
 
         if (id == R.id.action_about) {
-//            Toast.makeText(getApplicationContext(), "pinkowski.patryk@gmail.com\ngithub.com/pinky169", Toast.LENGTH_LONG).show();
             return true;
         }
 
@@ -99,20 +99,39 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_documents) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DocumentsFragment()).commit();
         } else if (id == R.id.nav_localization) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ShareLocalizationFragment()).commit();
+            return true;
+            //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ShareLocalizationFragment()).commit();
         } else if (id == R.id.nav_share) {
-
-            Intent sendIntent = new Intent();
-            sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
-            sendIntent.setType("text/plain");
-
-            Intent shareIntent = Intent.createChooser(sendIntent, null);
-            startActivity(shareIntent);
+            sendCarData();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void sendCarData() {
+        //Pobierz dane głównego auta
+        Car mainCar = dbHelper.getMainCar();
+
+        if (mainCar != null) {
+
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            String carInfo = getResources().getString(R.string.data_to_send_format,
+                    mainCar.getMarka(),
+                    mainCar.getModel(),
+                    mainCar.getRok_produkcji(),
+                    mainCar.getPojemnosc(),
+                    mainCar.getMoc()
+            );
+            sendIntent.putExtra(Intent.EXTRA_TEXT, carInfo);
+            sendIntent.setType("text/plain");
+
+            Intent shareIntent = Intent.createChooser(sendIntent, null);
+            startActivity(shareIntent);
+        } else {
+            Toast.makeText(this, "Najpierw ustaw jedno ze swoich aut jako domyślne", Toast.LENGTH_LONG).show();
+        }
     }
 }
