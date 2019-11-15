@@ -1,2 +1,2 @@
-# BezpieczneAuto
-Aplikacja mobilna na systemy Android - pozwala na zapisywanie danych swoich aut, wymienianych w nich części oraz terminów przeglądów i ubezpieczeń.
+# Bezpieczne auto (Safe car)
+The mobile app for Android sytems that allows you to save your car data, parts that were replaced, as well as inspections and insurance informations and dates.
