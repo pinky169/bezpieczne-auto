@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -17,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -33,10 +34,10 @@ import patryk.bezpieczneauto.Interfaces.Documents;
 import patryk.bezpieczneauto.Objects.Document;
 import patryk.bezpieczneauto.R;
 
-public class PrzegladyFragment extends Fragment implements Documents {
+public class CarServiceFragment extends Fragment implements Documents, DocumentsListAdapter.OnDocumentListener {
 
     private ArrayList<Document> documents = new ArrayList<>();
-    private ListView listView;
+    private RecyclerView recyclerView;
     private DocumentsListAdapter documentsListAdapter;
     private DBHelper dbHelper;
     private FloatingActionButton fab;
@@ -53,37 +54,32 @@ public class PrzegladyFragment extends Fragment implements Documents {
         documents = dbHelper.getCarServices();
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public static CarServiceFragment newInstance(String text) {
 
-        View rootView = inflater.inflate(R.layout.fragment_car_service, container, false);
-        documentsListAdapter = new DocumentsListAdapter(getContext(), R.layout.document_listview_item, documents);
-        listView = rootView.findViewById(R.id.car_service_listview_id);
-        listView.setAdapter(documentsListAdapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                editDocumentDialog(position + 1);
-            }
-        });
-
-        fab = rootView.findViewById(R.id.car_service_fab);
-        fab.setOnClickListener(v -> newDocumentDialog());
-
-        return rootView;
-    }
-
-    public static PrzegladyFragment newInstance(String text) {
-
-        PrzegladyFragment f = new PrzegladyFragment();
+        CarServiceFragment f = new CarServiceFragment();
         Bundle b = new Bundle();
         b.putString("msg", text);
 
         f.setArguments(b);
 
         return f;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        View rootView = inflater.inflate(R.layout.fragment_car_service, container, false);
+        documentsListAdapter = new DocumentsListAdapter(getContext(), R.layout.document_listview_item, this, documents);
+        recyclerView = rootView.findViewById(R.id.car_service_recyclerview_id);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(documentsListAdapter);
+
+        fab = rootView.findViewById(R.id.car_service_fab);
+        fab.setOnClickListener(v -> newDocumentDialog());
+
+        return rootView;
     }
 
     @Override
@@ -252,5 +248,10 @@ public class PrzegladyFragment extends Fragment implements Documents {
 
         final AlertDialog alertDialog = alertDialogBuilderUserInput.create();
         alertDialog.show();
+    }
+
+    @Override
+    public void onDocumentClick(int position) {
+        editDocumentDialog(position + 1);
     }
 }

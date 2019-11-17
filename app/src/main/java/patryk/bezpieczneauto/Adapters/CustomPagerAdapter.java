@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import patryk.bezpieczneauto.Fragments.PrzegladyFragment;
-import patryk.bezpieczneauto.Fragments.UbezpieczeniaFragment;
+import patryk.bezpieczneauto.Fragments.CarServiceFragment;
+import patryk.bezpieczneauto.Fragments.InsuranceFragment;
 import patryk.bezpieczneauto.R;
 
 public class CustomPagerAdapter extends FragmentPagerAdapter {
@@ -28,11 +28,11 @@ public class CustomPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int pos) {
         switch(pos) {
             case 0:
-                return UbezpieczeniaFragment.newInstance("UbezpieczeniaFragment, 1");
+                return InsuranceFragment.newInstance("InsuranceFragment, 1");
             case 1:
-                return PrzegladyFragment.newInstance("PrzegladyFragment, 2");
+                return CarServiceFragment.newInstance("CarServiceFragment, 2");
             default:
-                return UbezpieczeniaFragment.newInstance("UbezpieczeniaFragment, Default");
+                return InsuranceFragment.newInstance("InsuranceFragment, Default");
         }
     }
 

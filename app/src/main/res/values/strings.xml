@@ -45,7 +45,7 @@
     <string name="menu_nav_dokumenty">Dokumenty</string>
     <string name="menu_nav_udostepnij_swoja_lokalizacje">Udostępnij lokalizację</string>
     <string name="policy_number">Numer polisy:</string>
-    <string name="policy_hint">Np. 2019-815456181</string>
+    <string name="policy_hint">Np. 2019–815456181</string>
     <string name="additional_info_hint">Np. Ubezpieczyciel: AXA</string>
     <string name="document_date_from_txt">Od kiedy obowiązuje ubezpieczenie:</string>
     <string name="document_date_to_txt">Do kiedy obowiązuje ubezpieczenie:</string>
@@ -60,5 +60,6 @@
     <string name="pojemnosc_silnika">Pojemność silnika:</string>
     <string name="konie_mechaniczne">Konie mechaniczne:</string>
     <string name="data_to_send_format">Marka: %s \nModel: %s \nRok produkcji: %s \nPojemność silnika: %s \nMoc: %sKM</string>
+    <string name="set_as_default_car_hint">Najpierw ustaw jedno ze swoich aut jako domyślne!</string>
 
 </resources>

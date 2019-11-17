@@ -1,71 +1,86 @@
 package patryk.bezpieczneauto.Adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
 import patryk.bezpieczneauto.Objects.Document;
 import patryk.bezpieczneauto.R;
 
-public class DocumentsListAdapter extends ArrayAdapter<Document> {
+public class DocumentsListAdapter extends RecyclerView.Adapter<DocumentsListAdapter.DocumentViewHolder> {
 
     private Context context;
     private int layoutResourceId;
     private ArrayList<Document> list;
+    private OnDocumentListener onDocumentListener;
 
-    public DocumentsListAdapter(Context context, int layoutResourceId, ArrayList<Document> list) {
-        super(context, layoutResourceId, list);
+    public DocumentsListAdapter(Context context, int layoutResourceId, OnDocumentListener onDocumentListener, ArrayList<Document> list) {
         this.context = context;
         this.layoutResourceId = layoutResourceId;
+        this.onDocumentListener = onDocumentListener;
         this.list = list;
     }
 
-    static class DocumentViewHolder
-    {
-        TextView carName;
-        TextView docInfo;
-        TextView docAdditionalInfo;
-        TextView docDate;
-        TextView docExpiryDate;
+    @NonNull
+    @Override
+    public DocumentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(layoutResourceId, parent, false);
+        return new DocumentViewHolder(view, onDocumentListener);
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View row = convertView;
-        final DocumentViewHolder holder;
+    public void onBindViewHolder(@NonNull DocumentViewHolder holder, int position) {
 
-        if(row == null)
-        {
-            LayoutInflater inflater = ((Activity)context).getLayoutInflater();
-            row = inflater.inflate(layoutResourceId, parent, false);
-
-            holder = new DocumentViewHolder();
-            holder.carName = row.findViewById(R.id.document_car_name);
-            holder.docInfo = row.findViewById(R.id.insurance_policy);
-            holder.docAdditionalInfo = row.findViewById(R.id.insurance_additional_info);
-            holder.docDate = row.findViewById(R.id.insurance_date);
-            holder.docExpiryDate = row.findViewById(R.id.insurance_expiry_date);
-
-            row.setTag(holder);
-        }
-        else
-        {
-            holder = (DocumentViewHolder) row.getTag();
-        }
-
-        Document document = getItem(position);
+        Document document = list.get(position);
         holder.carName.setText(document.getAuto());
         holder.docInfo.setText(document.getInfo());
         holder.docAdditionalInfo.setText(document.getAdditionalInfo());
         holder.docDate.setText(String.format("Od: %s", document.getDate()));
         holder.docExpiryDate.setText(String.format("Do: %s", document.getExpiryDate()));
+    }
 
-        return row;
+
+    @Override
+    public int getItemCount() {
+        return list.size();
+    }
+
+    public interface OnDocumentListener {
+        void onDocumentClick(int position);
+    }
+
+    static class DocumentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        TextView carName;
+        TextView docInfo;
+        TextView docAdditionalInfo;
+        TextView docDate;
+        TextView docExpiryDate;
+        OnDocumentListener onDocumentListener;
+
+        public DocumentViewHolder(View view, OnDocumentListener onDocumentListener) {
+            super(view);
+
+            carName = view.findViewById(R.id.document_car_name);
+            docInfo = view.findViewById(R.id.insurance_policy);
+            docAdditionalInfo = view.findViewById(R.id.insurance_additional_info);
+            docDate = view.findViewById(R.id.insurance_date);
+            docExpiryDate = view.findViewById(R.id.insurance_expiry_date);
+            this.onDocumentListener = onDocumentListener;
+            view.setOnClickListener(this);
+        }
+
+
+        @Override
+        public void onClick(View v) {
+            onDocumentListener.onDocumentClick(getAdapterPosition());
+        }
     }
 }

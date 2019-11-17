@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity
             Intent shareIntent = Intent.createChooser(sendIntent, null);
             startActivity(shareIntent);
         } else {
-            Toast.makeText(this, "Najpierw ustaw jedno ze swoich aut jako domyślne", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getResources().getString(R.string.set_as_default_car_hint), Toast.LENGTH_LONG).show();
         }
     }
 }
