@@ -40,11 +40,11 @@ public class DocumentsListAdapter extends RecyclerView.Adapter<DocumentsListAdap
     public void onBindViewHolder(@NonNull DocumentViewHolder holder, int position) {
 
         Document document = list.get(position);
-        holder.carName.setText(document.getAuto());
-        holder.docInfo.setText(document.getInfo());
-        holder.docAdditionalInfo.setText(document.getAdditionalInfo());
-        holder.docDate.setText(String.format("Od: %s", document.getDate()));
-        holder.docExpiryDate.setText(String.format("Do: %s", document.getExpiryDate()));
+        holder.car_name.setText(document.getAuto());
+        holder.info.setText(document.getInfo());
+        holder.additionalInfo.setText(document.getAdditionalInfo());
+        holder.date.setText(String.format("Od: %s", document.getDate()));
+        holder.expiryDate.setText(String.format("Do: %s", document.getExpiryDate()));
     }
 
 
@@ -58,21 +58,22 @@ public class DocumentsListAdapter extends RecyclerView.Adapter<DocumentsListAdap
     }
 
     static class DocumentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView carName;
-        TextView docInfo;
-        TextView docAdditionalInfo;
-        TextView docDate;
-        TextView docExpiryDate;
+        TextView car_name;
+        TextView info;
+        TextView additionalInfo;
+        TextView date;
+        TextView expiryDate;
         OnDocumentListener onDocumentListener;
 
-        public DocumentViewHolder(View view, OnDocumentListener onDocumentListener) {
+        DocumentViewHolder(View view, OnDocumentListener onDocumentListener) {
             super(view);
 
-            carName = view.findViewById(R.id.document_car_name);
-            docInfo = view.findViewById(R.id.insurance_policy);
-            docAdditionalInfo = view.findViewById(R.id.insurance_additional_info);
-            docDate = view.findViewById(R.id.insurance_date);
-            docExpiryDate = view.findViewById(R.id.insurance_expiry_date);
+            car_name = view.findViewById(R.id.document_car_name);
+            info = view.findViewById(R.id.insurance_policy);
+            additionalInfo = view.findViewById(R.id.insurance_additional_info);
+            date = view.findViewById(R.id.insurance_date);
+            expiryDate = view.findViewById(R.id.insurance_expiry_date);
+
             this.onDocumentListener = onDocumentListener;
             view.setOnClickListener(this);
         }

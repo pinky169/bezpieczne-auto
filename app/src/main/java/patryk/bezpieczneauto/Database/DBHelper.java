@@ -368,20 +368,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return array_list;
     }
 
-    // Usuwa auto o podanym id
-    public void deleteCar(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        db.delete(CARS_TABLE_NAME, "id=?", new String[]{Integer.toString(id)});
-        db.close();
-    }
-
-    // Usuwa wszystkie części dla auta o podanym id
-    public void deletePart(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        db.delete(PARTS_TABLE_NAME, "part_id=?", new String[]{Integer.toString(id)});
-        db.close();
-    }
-
     public void insertInsurance(int car_id, String car_name, String policy, String additional_info, String dateFrom, String dateTo) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -539,6 +525,34 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put("date_from", document.getDate());
         contentValues.put("date_to", document.getExpiryDate());
         db.update(CAR_SERVICE_TABLE, contentValues, "service_id = ?", new String[]{String.valueOf(id)});
+        db.close();
+    }
+
+    // Delete functions TO-DO
+
+    // Usuwa auto o podanym id
+    public void deleteCar(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.delete(CARS_TABLE_NAME, "id=?", new String[]{Integer.toString(id)});
+        db.close();
+    }
+
+    // Usuwa wszystkie części dla auta o podanym id
+    public void deletePart(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.delete(PARTS_TABLE_NAME, "part_id=?", new String[]{Integer.toString(id)});
+        db.close();
+    }
+
+    public void deleteInsurance(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.delete(INSURANCE_TABLE, "insurance_id=?", new String[]{Integer.toString(id)});
+        db.close();
+    }
+
+    public void deleteCarService(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.delete(CAR_SERVICE_TABLE, "service_id=?", new String[]{Integer.toString(id)});
         db.close();
     }
 }

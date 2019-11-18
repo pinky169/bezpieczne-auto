@@ -24,10 +24,6 @@
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
                 android:title="@string/menu_nav_share" />
-            <item
-                android:id="@+id/nav_localization"
-                android:icon="@drawable/ic_localization"
-                android:title="@string/menu_nav_udostepnij_swoja_lokalizacje" />
         </menu>
     </item>
 

@@ -48,10 +48,6 @@ public class CarDataFragment extends Fragment implements Cars {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dbHelper = new DBHelper(getActivity());
-
-        // Do testów
-        // wstawAutka(dbHelper);
-        // wstawCzesci(dbHelper);
     }
 
     @Nullable
@@ -93,6 +89,7 @@ public class CarDataFragment extends Fragment implements Cars {
             Uri photoUri = Uri.parse(photoString);
             Glide.with(CarDataFragment.this)
                     .load(photoUri)
+                    .fitCenter()
                     .into(img);
             img.setTag("img-from-phone");
             imgButton.setTag("img-from-phone");
@@ -159,34 +156,6 @@ public class CarDataFragment extends Fragment implements Cars {
             }
         }
     };
-
-    /*
-    public Bitmap rotateImage(Uri imgUri) {
-        try {
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(Objects.requireNonNull(getContext()).getContentResolver(), imgUri);
-            final InputStream imageStream = getContext().getContentResolver().openInputStream(imgUri);
-            ExifInterface exif = new ExifInterface(imageStream);
-            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
-            Matrix matrix = new Matrix();
-            if (orientation == 6) {
-                matrix.postRotate(90);
-            }
-            else if (orientation == 3) {
-                matrix.postRotate(180);
-            }
-            else if (orientation == 8) {
-                matrix.postRotate(270);
-            }
-            return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-        } catch (OutOfMemoryError | IOException e) {
-            e.printStackTrace();
-            Toast.makeText(getContext(), "Coś poszło nie tak :(", Toast.LENGTH_LONG).show();
-        }
-
-        return null;
-    }
-
-    */
 
     public void addDialog() {
 
@@ -274,27 +243,5 @@ public class CarDataFragment extends Fragment implements Cars {
     @Override
     public void editDialog(int id) {
         // TO-DO
-    }
-
-    private void wstawAutka(DBHelper dbHelper) {
-        dbHelper.insertCar("Seat", "Ibiza III", "2001", "1.9", "90", R.drawable.ic_car, 1);
-        dbHelper.insertCar("Ford", "Mustang", "2019", "3.0", "399", R.drawable.ic_car, 0);
-        dbHelper.insertCar("Nissan", "Micra", "2003", "1.5", "66", R.drawable.ic_car, 0);
-        dbHelper.insertCar("Opel", "Signum", "2006", "3.0", "199", R.drawable.ic_car, 0);
-        dbHelper.insertCar("Smart", "Fortwo", "2004", "1.5", "55", R.drawable.ic_car, 0);
-        dbHelper.insertCar("Ford", "Mondeo", "2014", "2.0", "145", R.drawable.ic_car, 0);
-        dbHelper.insertCar("Renault", "Clio", "2005", "2.0", "85", R.drawable.ic_car, 0);
-        dbHelper.insertCar("Kia", "Stinger", "2018", "3.0", "299", R.drawable.ic_car, 0);
-    }
-
-    private void wstawCzesci(DBHelper dbHelper) {
-        dbHelper.insertPart(1, "Część", "Dodatkowe info", "16.08.2019", "125");
-        dbHelper.insertPart(2, "Część", "Dodatkowe info", "16.08.2019", "125");
-        dbHelper.insertPart(3, "Część", "Dodatkowe info", "16.08.2019", "125");
-        dbHelper.insertPart(4, "Część", "Dodatkowe info", "16.08.2019", "125");
-        dbHelper.insertPart(5, "Część", "Dodatkowe info", "16.08.2019", "125");
-        dbHelper.insertPart(6, "Część", "Dodatkowe info", "16.08.2019", "125");
-        dbHelper.insertPart(7, "Część", "Dodatkowe info", "16.08.2019", "125");
-        dbHelper.insertPart(8, "Część", "Dodatkowe info", "16.08.2019", "125");
     }
 }

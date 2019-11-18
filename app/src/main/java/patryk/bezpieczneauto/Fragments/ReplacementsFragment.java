@@ -58,11 +58,10 @@ public class ReplacementsFragment extends Fragment implements Cars {
         // Lista aut (obiektów Car)
         carData = dbHelper.getAllCars();
 
-        if (carData != null)
-        {
+        if (carData != null) {
             carParts = new HashMap<>();
 
-            for(int i=0; i < carData.size(); i++) {
+            for (int i = 0; i < carData.size(); i++) {
                 ArrayList<CarPart> partsList = dbHelper.getSpecficCarParts(i + 1);
                 carParts.put(carData.get(i), partsList);
             }
@@ -75,7 +74,7 @@ public class ReplacementsFragment extends Fragment implements Cars {
 
         View rootView = inflater.inflate(R.layout.fragment_replacements, container, false);
         final ExpandableListView expandableListView = rootView.findViewById(R.id.expandableList);
-        adapter = new ExpandableListAdapter(getContext(), mInterface, dbHelper, R.layout.list_group, R.layout.list_child, carData, carParts);
+        adapter = new ExpandableListAdapter(getContext(), mInterface, dbHelper, R.layout.expandable_list_group, R.layout.expandable_list_child, carData, carParts);
         expandableListView.setAdapter(adapter);
 
         // Przycisk dodawania nowych części
@@ -152,14 +151,14 @@ public class ReplacementsFragment extends Fragment implements Cars {
                             if (!allCars.isEmpty()) {
 
                                 dbHelper.insertPart(
-                                        spinnerSelectedItemPosition+1,
+                                        spinnerSelectedItemPosition + 1,
                                         partNew.getText().toString(),
                                         partAdditionalInfo.getText().toString(),
                                         partReplacementDate.getText().toString(),
                                         partPrice.getText().toString()
                                 );
 
-                                ArrayList<CarPart> partsList = dbHelper.getSpecficCarParts(spinnerSelectedItemPosition+1);
+                                ArrayList<CarPart> partsList = dbHelper.getSpecficCarParts(spinnerSelectedItemPosition + 1);
                                 carParts.put(carData.get(spinnerSelectedItemPosition), partsList);
                                 adapter.notifyDataSetChanged();
                             }
@@ -200,7 +199,7 @@ public class ReplacementsFragment extends Fragment implements Cars {
         carCapacity.setText(currentCar.getPojemnosc());
         carPower.setText(currentCar.getMoc());
 
-        if(currentCar.isMainCar() > 0) {
+        if (currentCar.isMainCar() > 0) {
             checkBox.setChecked(true);
         }
 
@@ -235,8 +234,8 @@ public class ReplacementsFragment extends Fragment implements Cars {
 
                                 dbHelper.updateCar(id, updatedCar);
                                 dbHelper.setMainCar(id);
-                                carData.set(id-1, updatedCar);
-                                carParts.put(carData.get(id-1), dbHelper.getSpecficCarParts(id));
+                                carData.set(id - 1, updatedCar);
+                                carParts.put(carData.get(id - 1), dbHelper.getSpecficCarParts(id));
 
                                 Toast.makeText(getContext(), "Zmieniono dane auta " +
                                         currentCar.getMarka() + " (" + currentCar.getModel() +
@@ -255,8 +254,8 @@ public class ReplacementsFragment extends Fragment implements Cars {
                                 );
 
                                 dbHelper.updateCar(id, updatedCar);
-                                carData.set(id-1, updatedCar);
-                                carParts.put(carData.get(id-1), dbHelper.getSpecficCarParts(id));
+                                carData.set(id - 1, updatedCar);
+                                carParts.put(carData.get(id - 1), dbHelper.getSpecficCarParts(id));
 
                                 Toast.makeText(getContext(), "Zmieniono dane auta " + currentCar.getMarka() + " (" + currentCar.getModel() + ")", Toast.LENGTH_LONG).show();
                             }
