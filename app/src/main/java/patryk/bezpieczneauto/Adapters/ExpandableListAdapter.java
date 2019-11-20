@@ -15,11 +15,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import patryk.bezpieczneauto.Database.DBHelper;
 import patryk.bezpieczneauto.Interfaces.Cars;
-import patryk.bezpieczneauto.Objects.Car;
-import patryk.bezpieczneauto.Objects.CarPart;
 import patryk.bezpieczneauto.R;
+import patryk.bezpieczneauto.database.DBHelper;
+import patryk.bezpieczneauto.model.Car;
+import patryk.bezpieczneauto.model.CarPart;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 

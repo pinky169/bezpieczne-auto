@@ -28,10 +28,10 @@ import androidx.fragment.app.FragmentTransaction;
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import patryk.bezpieczneauto.Database.DBHelper;
 import patryk.bezpieczneauto.Interfaces.Cars;
-import patryk.bezpieczneauto.Objects.Car;
 import patryk.bezpieczneauto.R;
+import patryk.bezpieczneauto.database.DBHelper;
+import patryk.bezpieczneauto.model.Car;
 
 public class CarDataFragment extends Fragment implements Cars {
 

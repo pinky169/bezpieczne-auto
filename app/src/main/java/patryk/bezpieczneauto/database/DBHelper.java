@@ -1,4 +1,4 @@
-package patryk.bezpieczneauto.Database;
+package patryk.bezpieczneauto.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,10 +9,10 @@ import android.net.Uri;
 
 import java.util.ArrayList;
 
-import patryk.bezpieczneauto.Objects.Car;
-import patryk.bezpieczneauto.Objects.CarPart;
-import patryk.bezpieczneauto.Objects.Document;
 import patryk.bezpieczneauto.R;
+import patryk.bezpieczneauto.model.Car;
+import patryk.bezpieczneauto.model.CarPart;
+import patryk.bezpieczneauto.model.Document;
 
 public class DBHelper extends SQLiteOpenHelper {
 

@@ -31,11 +31,11 @@ import java.util.Locale;
 import java.util.Objects;
 
 import patryk.bezpieczneauto.Adapters.ExpandableListAdapter;
-import patryk.bezpieczneauto.Database.DBHelper;
 import patryk.bezpieczneauto.Interfaces.Cars;
-import patryk.bezpieczneauto.Objects.Car;
-import patryk.bezpieczneauto.Objects.CarPart;
 import patryk.bezpieczneauto.R;
+import patryk.bezpieczneauto.database.DBHelper;
+import patryk.bezpieczneauto.model.Car;
+import patryk.bezpieczneauto.model.CarPart;
 
 public class ReplacementsFragment extends Fragment implements Cars {
 

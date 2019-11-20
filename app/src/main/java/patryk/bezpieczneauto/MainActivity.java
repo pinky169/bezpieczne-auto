@@ -13,11 +13,11 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 
-import patryk.bezpieczneauto.Database.DBHelper;
 import patryk.bezpieczneauto.Fragments.CarDataFragment;
 import patryk.bezpieczneauto.Fragments.DocumentsFragment;
 import patryk.bezpieczneauto.Fragments.ReplacementsFragment;
-import patryk.bezpieczneauto.Objects.Car;
+import patryk.bezpieczneauto.database.DBHelper;
+import patryk.bezpieczneauto.model.Car;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {

@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import patryk.bezpieczneauto.Objects.Document;
 import patryk.bezpieczneauto.R;
+import patryk.bezpieczneauto.model.Document;
 
 public class DocumentsListAdapter extends RecyclerView.Adapter<DocumentsListAdapter.DocumentViewHolder> {
 

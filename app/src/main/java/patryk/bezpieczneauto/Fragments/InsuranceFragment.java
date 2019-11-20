@@ -29,10 +29,10 @@ import java.util.Locale;
 import java.util.Objects;
 
 import patryk.bezpieczneauto.Adapters.DocumentsListAdapter;
-import patryk.bezpieczneauto.Database.DBHelper;
 import patryk.bezpieczneauto.Interfaces.Documents;
-import patryk.bezpieczneauto.Objects.Document;
 import patryk.bezpieczneauto.R;
+import patryk.bezpieczneauto.database.DBHelper;
+import patryk.bezpieczneauto.model.Document;
 
 public class InsuranceFragment extends Fragment implements Documents, DocumentsListAdapter.OnDocumentListener {
 

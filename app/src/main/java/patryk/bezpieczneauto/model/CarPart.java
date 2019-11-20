@@ -1,4 +1,4 @@
-package patryk.bezpieczneauto.Objects;
+package patryk.bezpieczneauto.model;
 
 
 public class CarPart {
