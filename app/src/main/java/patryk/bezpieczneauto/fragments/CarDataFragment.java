@@ -1,4 +1,4 @@
-package patryk.bezpieczneauto.Fragments;
+package patryk.bezpieczneauto.fragments;
 
 import android.Manifest;
 import android.app.Activity;
@@ -28,9 +28,9 @@ import androidx.fragment.app.FragmentTransaction;
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import patryk.bezpieczneauto.Interfaces.Cars;
 import patryk.bezpieczneauto.R;
 import patryk.bezpieczneauto.database.DBHelper;
+import patryk.bezpieczneauto.interfaces.Cars;
 import patryk.bezpieczneauto.model.Car;
 
 public class CarDataFragment extends Fragment implements Cars {

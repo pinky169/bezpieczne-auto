@@ -1,4 +1,4 @@
-package patryk.bezpieczneauto.Fragments;
+package patryk.bezpieczneauto.fragments;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -28,27 +28,35 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
-import patryk.bezpieczneauto.Adapters.DocumentsListAdapter;
-import patryk.bezpieczneauto.Interfaces.Documents;
 import patryk.bezpieczneauto.R;
+import patryk.bezpieczneauto.adapters.DocumentsListAdapter;
 import patryk.bezpieczneauto.database.DBHelper;
+import patryk.bezpieczneauto.interfaces.Documents;
 import patryk.bezpieczneauto.model.Document;
 
-public class InsuranceFragment extends Fragment implements Documents, DocumentsListAdapter.OnDocumentListener {
+public class CarServiceFragment extends Fragment implements Documents, DocumentsListAdapter.OnDocumentListener {
 
     private ArrayList<Document> documents = new ArrayList<>();
     private RecyclerView recyclerView;
     private DocumentsListAdapter documentsListAdapter;
-    private FloatingActionButton fab;
     private DBHelper dbHelper;
+    private FloatingActionButton fab;
     private ArrayList<String> allCars;
     private Spinner chooseCarSpinner;
     private ArrayAdapter<String> spinnerAdapter;
     private int spinnerSelectedItemPosition;
 
-    public static InsuranceFragment newInstance(String text) {
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        InsuranceFragment f = new InsuranceFragment();
+        dbHelper = new DBHelper(getContext());
+        documents = dbHelper.getCarServices();
+    }
+
+    public static CarServiceFragment newInstance(String text) {
+
+        CarServiceFragment f = new CarServiceFragment();
         Bundle b = new Bundle();
         b.putString("msg", text);
 
@@ -57,43 +65,36 @@ public class InsuranceFragment extends Fragment implements Documents, DocumentsL
         return f;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        dbHelper = new DBHelper(getContext());
-        documents = dbHelper.getInsurances();
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_insurances, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_car_service, container, false);
         documentsListAdapter = new DocumentsListAdapter(getContext(), R.layout.document_listview_item, this, documents);
-        recyclerView = rootView.findViewById(R.id.insurance_recyclerview_id);
+        recyclerView = rootView.findViewById(R.id.car_service_recyclerview_id);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(documentsListAdapter);
 
-        fab = rootView.findViewById(R.id.insuurance_fab);
+        fab = rootView.findViewById(R.id.car_service_fab);
         fab.setOnClickListener(v -> newDocumentDialog());
-
 
         return rootView;
     }
 
+    @Override
     public void newDocumentDialog() {
+
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getActivity());
-        View view = layoutInflaterAndroid.inflate(R.layout.dialog_add_insurance, null);
+        View view = layoutInflaterAndroid.inflate(R.layout.dialog_add_car_service, null);
 
         AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(getContext());
         alertDialogBuilderUserInput.setView(view);
 
-        final EditText policy = view.findViewById(R.id.insurance_policy_input);
-        final EditText additionalInfo = view.findViewById(R.id.insurance_additional_info_input);
-        final EditText dateFrom = view.findViewById(R.id.insurance_date_input);
-        final EditText dateTo = view.findViewById(R.id.insurance_expiry_date_input);
+        final EditText reg_nr = view.findViewById(R.id.car_service_registration_input);
+        final EditText mileage = view.findViewById(R.id.car_service_mileage_input);
+        final EditText dateFrom = view.findViewById(R.id.car_service_date_input);
+        final EditText dateTo = view.findViewById(R.id.car_service_expiry_date_input);
 
         // Ustawiam proponowaną datę jako dzisiejszą i przyszły rok w EditTextach
         Calendar calendar = Calendar.getInstance();
@@ -114,7 +115,7 @@ public class InsuranceFragment extends Fragment implements Documents, DocumentsL
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         // Spinner z markami aut
-        chooseCarSpinner = view.findViewById(R.id.insurance_choose_car_spinner);
+        chooseCarSpinner = view.findViewById(R.id.car_service_choose_car_spinner);
         chooseCarSpinner.setAdapter(spinnerAdapter);
         chooseCarSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -138,8 +139,8 @@ public class InsuranceFragment extends Fragment implements Documents, DocumentsL
                     public void onClick(DialogInterface dialogBox, int id) {
 
                         // Wyświetl wiadomość jeżeli któreś pole jest puste
-                        if (TextUtils.isEmpty(policy.getText().toString()) ||
-                                TextUtils.isEmpty(additionalInfo.getText().toString()) ||
+                        if (TextUtils.isEmpty(reg_nr.getText().toString()) ||
+                                TextUtils.isEmpty(mileage.getText().toString()) ||
                                 TextUtils.isEmpty(dateFrom.getText().toString()) ||
                                 TextUtils.isEmpty(dateTo.getText().toString())) {
                             Toast.makeText(getContext(), "Musisz wypełnić każde pole!", Toast.LENGTH_SHORT).show();
@@ -149,13 +150,13 @@ public class InsuranceFragment extends Fragment implements Documents, DocumentsL
                         if (!allCars.isEmpty()) {
                             Document mDocument = new Document(
                                     dbHelper.getCar(spinnerSelectedItemPosition + 1).getMarka() + " " + dbHelper.getCar(spinnerSelectedItemPosition + 1).getModel(),
-                                    "Numer polisy: " + policy.getText().toString(),
-                                    additionalInfo.getText().toString(),
+                                    "Numer rejestracyjny: " + reg_nr.getText().toString(),
+                                    "Przebieg podczas badania: " + mileage.getText().toString() + "km",
                                     dateFrom.getText().toString(),
                                     dateTo.getText().toString()
                             );
 
-                            dbHelper.insertInsurance(spinnerSelectedItemPosition + 1, mDocument);
+                            dbHelper.insertCarService(spinnerSelectedItemPosition + 1, mDocument);
                             documents.add(mDocument);
                             documentsListAdapter.notifyDataSetChanged();
 
@@ -180,24 +181,24 @@ public class InsuranceFragment extends Fragment implements Documents, DocumentsL
     public void editDocumentDialog(int id) {
 
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getContext());
-        View view = layoutInflaterAndroid.inflate(R.layout.dialog_add_insurance, null);
+        View view = layoutInflaterAndroid.inflate(R.layout.dialog_add_car_service, null);
 
-        final EditText policy = view.findViewById(R.id.insurance_policy_input);
-        final EditText additionalInfo = view.findViewById(R.id.insurance_additional_info_input);
-        final EditText dateFrom = view.findViewById(R.id.insurance_date_input);
-        final EditText dateTo = view.findViewById(R.id.insurance_expiry_date_input);
+        final EditText reg_nr = view.findViewById(R.id.car_service_registration_input);
+        final EditText mileage = view.findViewById(R.id.car_service_mileage_input);
+        final EditText dateFrom = view.findViewById(R.id.car_service_date_input);
+        final EditText dateTo = view.findViewById(R.id.car_service_expiry_date_input);
 
-        final Document currentDocument = dbHelper.getInsurance(id);
+        final Document currentDocument = dbHelper.getCarService(id);
 
         allCars = new ArrayList<>();
         allCars.add(currentDocument.getAuto().toUpperCase());
         spinnerAdapter = new ArrayAdapter<>(Objects.requireNonNull(getContext()), android.R.layout.simple_spinner_item, allCars);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        chooseCarSpinner = view.findViewById(R.id.insurance_choose_car_spinner);
+        chooseCarSpinner = view.findViewById(R.id.car_service_choose_car_spinner);
         chooseCarSpinner.setAdapter(spinnerAdapter);
 
-        policy.setText(currentDocument.getInfo());
-        additionalInfo.setText(currentDocument.getAdditionalInfo());
+        reg_nr.setText(currentDocument.getInfo());
+        mileage.setText(currentDocument.getAdditionalInfo());
         dateFrom.setText(currentDocument.getDate());
         dateTo.setText(currentDocument.getExpiryDate());
 
@@ -210,8 +211,8 @@ public class InsuranceFragment extends Fragment implements Documents, DocumentsL
                             public void onClick(DialogInterface dialogBox, int dialogID) {
 
                                 // Wyświetl wiadomość jeżeli któreś pole jest puste
-                                if (TextUtils.isEmpty(policy.getText().toString()) ||
-                                        TextUtils.isEmpty(additionalInfo.getText().toString()) ||
+                                if (TextUtils.isEmpty(reg_nr.getText().toString()) ||
+                                        TextUtils.isEmpty(mileage.getText().toString()) ||
                                         TextUtils.isEmpty(dateFrom.getText().toString()) ||
                                         TextUtils.isEmpty(dateTo.getText().toString())) {
                                     Toast.makeText(getContext(), "Musisz wypełnić każde pole!", Toast.LENGTH_SHORT).show();
@@ -220,14 +221,14 @@ public class InsuranceFragment extends Fragment implements Documents, DocumentsL
 
                                     Document updatedDoc = new Document(
                                             currentDocument.getAuto(),
-                                            policy.getText().toString(),
-                                            additionalInfo.getText().toString(),
+                                            reg_nr.getText().toString(),
+                                            mileage.getText().toString(),
                                             dateFrom.getText().toString(),
                                             dateTo.getText().toString()
                                     );
 
 
-                                    dbHelper.updateInsurance(id, updatedDoc);
+                                    dbHelper.updateCarService(id, updatedDoc);
                                     documents.set(id - 1, updatedDoc);
                                     documentsListAdapter.notifyDataSetChanged();
                                     dbHelper.close();
@@ -247,7 +248,6 @@ public class InsuranceFragment extends Fragment implements Documents, DocumentsL
 
         final AlertDialog alertDialog = alertDialogBuilderUserInput.create();
         alertDialog.show();
-
     }
 
     @Override

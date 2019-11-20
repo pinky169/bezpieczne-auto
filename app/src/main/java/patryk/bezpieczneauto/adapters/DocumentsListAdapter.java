@@ -1,4 +1,4 @@
-package patryk.bezpieczneauto.Adapters;
+package patryk.bezpieczneauto.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

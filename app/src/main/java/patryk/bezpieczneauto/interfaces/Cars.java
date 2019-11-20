@@ -1,4 +1,4 @@
-package patryk.bezpieczneauto.Interfaces;
+package patryk.bezpieczneauto.interfaces;
 
 public interface Cars {
 

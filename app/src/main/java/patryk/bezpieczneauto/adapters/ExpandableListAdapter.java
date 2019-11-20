@@ -1,4 +1,4 @@
-package patryk.bezpieczneauto.Adapters;
+package patryk.bezpieczneauto.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,9 +15,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import patryk.bezpieczneauto.Interfaces.Cars;
 import patryk.bezpieczneauto.R;
 import patryk.bezpieczneauto.database.DBHelper;
+import patryk.bezpieczneauto.interfaces.Cars;
 import patryk.bezpieczneauto.model.Car;
 import patryk.bezpieczneauto.model.CarPart;
 

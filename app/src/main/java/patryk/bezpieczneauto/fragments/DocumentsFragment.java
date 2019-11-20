@@ -1,4 +1,4 @@
-package patryk.bezpieczneauto.Fragments;
+package patryk.bezpieczneauto.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,8 +13,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
-import patryk.bezpieczneauto.Adapters.CustomPagerAdapter;
 import patryk.bezpieczneauto.R;
+import patryk.bezpieczneauto.adapters.CustomPagerAdapter;
 
 public class DocumentsFragment extends Fragment {
 

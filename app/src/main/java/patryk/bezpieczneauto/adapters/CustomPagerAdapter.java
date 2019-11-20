@@ -1,4 +1,4 @@
-package patryk.bezpieczneauto.Adapters;
+package patryk.bezpieczneauto.adapters;
 
 import android.content.Context;
 
@@ -8,9 +8,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import patryk.bezpieczneauto.Fragments.CarServiceFragment;
-import patryk.bezpieczneauto.Fragments.InsuranceFragment;
 import patryk.bezpieczneauto.R;
+import patryk.bezpieczneauto.fragments.CarServiceFragment;
+import patryk.bezpieczneauto.fragments.InsuranceFragment;
 
 public class CustomPagerAdapter extends FragmentPagerAdapter {
 

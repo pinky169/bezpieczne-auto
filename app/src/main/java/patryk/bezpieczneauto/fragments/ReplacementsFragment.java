@@ -1,4 +1,4 @@
-package patryk.bezpieczneauto.Fragments;
+package patryk.bezpieczneauto.fragments;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -30,10 +30,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import patryk.bezpieczneauto.Adapters.ExpandableListAdapter;
-import patryk.bezpieczneauto.Interfaces.Cars;
 import patryk.bezpieczneauto.R;
+import patryk.bezpieczneauto.adapters.ExpandableListAdapter;
 import patryk.bezpieczneauto.database.DBHelper;
+import patryk.bezpieczneauto.interfaces.Cars;
 import patryk.bezpieczneauto.model.Car;
 import patryk.bezpieczneauto.model.CarPart;
 
