@@ -1,6 +1,18 @@
 # Bezpieczne auto (Safe car)
 The mobile app for Android sytems that allows you to save your car data, parts that were replaced, as well as inspections (services), insurance informations and dates.<br>
 Uses database to keep all necessary data in phone memory. Allows you to share data of your main car.
+# Used technologies and Android components
+- SQLite
+- RecyclerView 
+- Fragments
+- ViewPager
+- ViewHolders
+- ExpandableList
+- AlertDialog
+- Adapters
+- Intent.ACTION_SEND
+- Anything I forgot about :)
+# Application screenshots
 <p align="middle">
   <img src="https://github.com/pinky169/Images/blob/master/auto.png" width=200 />
   <img src="https://github.com/pinky169/Images/blob/master/auto1.png" width=200 />
