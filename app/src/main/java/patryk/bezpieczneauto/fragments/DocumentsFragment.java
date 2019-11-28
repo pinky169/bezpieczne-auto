@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,25 +28,6 @@ public class DocumentsFragment extends Fragment {
 
         TabLayout tabLayout = rootView.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-
-        ImageButton swipeLeft = rootView.findViewById(R.id.left_nav);
-        ImageButton swipeRight = rootView.findViewById(R.id.right_nav);
-
-        swipeLeft.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                viewPager.arrowScroll(View.FOCUS_LEFT);
-                // Toast.makeText(getContext(), "PRZEGLĄDY", Toast.LENGTH_LONG).show();
-            }
-        });
-
-        swipeRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                viewPager.arrowScroll(View.FOCUS_RIGHT);
-                // Toast.makeText(getContext(), "UBEZPIECZENIA", Toast.LENGTH_LONG).show();
-            }
-        });
 
         return rootView;
     }

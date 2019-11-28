@@ -3,73 +3,72 @@
     android:id="@+id/single_list_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
     android:layout_margin="2dp"
-    android:background="@drawable/green_box_shadow_border">
+    android:background="@drawable/green_box_shadow_border"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
 
     <ImageView
         android:id="@+id/item_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="5dp"
-        android:layout_centerVertical="true"
         android:src="@drawable/ic_car" />
 
     <TextView
         android:id="@+id/car_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_margin="2dp"
+        android:layout_toEndOf="@id/item_icon"
+        android:text="Name"
+        android:textAllCaps="true"
         android:textColor="#000"
         android:textSize="20sp"
-        android:textAllCaps="true"
-        android:textStyle="bold"
-        android:text="Name"
-        android:layout_centerVertical="true"
-        android:layout_toEndOf="@id/item_icon"/>
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/car_sub_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="2dp"
-        android:textAllCaps="true"
-        android:textSize="14sp"
-        android:text="Marka"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@id/car_name"/>
+        android:layout_margin="2dp"
+        android:layout_toEndOf="@id/car_name"
+        android:text="Marka"
+        android:textAllCaps="true"
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="2dp"
-        android:textAllCaps="true"
-        android:textSize="14sp"
-        android:text="Year"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@id/car_sub_info"/>
+        android:layout_margin="2dp"
+        android:layout_toEndOf="@id/car_sub_info"
+        android:text="Year"
+        android:textAllCaps="true"
+        android:textSize="14sp" />
 
     <ImageView
         android:id="@+id/is_main_car_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_marginEnd="8dp"
         android:layout_toStartOf="@id/edit_icon"
-        android:tooltipText="Domyślne auto"
-        android:layout_centerVertical="true"
-        android:src="@drawable/ic_check_circle" />
+        android:src="@drawable/ic_check_circle"
+        android:tooltipText="Domyślne auto" />
 
     <ImageView
         android:id="@+id/edit_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
+        android:layout_marginEnd="8dp"
         android:src="@drawable/ic_edit" />
-
 
 </RelativeLayout>

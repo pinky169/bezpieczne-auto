@@ -74,7 +74,7 @@ public class ReplacementsFragment extends Fragment implements Cars {
 
         View rootView = inflater.inflate(R.layout.fragment_replacements, container, false);
         final ExpandableListView expandableListView = rootView.findViewById(R.id.expandableList);
-        adapter = new ExpandableListAdapter(getContext(), mInterface, dbHelper, R.layout.expandable_list_group, R.layout.expandable_list_child, carData, carParts);
+        adapter = new ExpandableListAdapter(getContext(), mInterface, dbHelper, R.layout.expandablelist_group, R.layout.expandablelist_child, carData, carParts);
         expandableListView.setAdapter(adapter);
 
         // Przycisk dodawania nowych części

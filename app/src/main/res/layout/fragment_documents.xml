@@ -21,22 +21,6 @@
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-    <ImageButton
-        android:id="@+id/right_nav"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="end"
-        android:background="@null"
-        android:src="@drawable/ic_nav_arrow_right" />
-
-    <ImageButton
-        android:id="@+id/left_nav"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="@null"
-        android:src="@drawable/ic_nav_arrow_left" />
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

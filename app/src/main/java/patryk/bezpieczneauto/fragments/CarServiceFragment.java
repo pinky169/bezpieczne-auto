@@ -69,14 +69,14 @@ public class CarServiceFragment extends Fragment implements Documents, Documents
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_car_service, container, false);
-        documentsListAdapter = new DocumentsListAdapter(getContext(), R.layout.document_listview_item, this, documents);
-        recyclerView = rootView.findViewById(R.id.car_service_recyclerview_id);
+        View rootView = inflater.inflate(R.layout.recyclerview_layout, container, false);
+        documentsListAdapter = new DocumentsListAdapter(getContext(), R.layout.item_document, this, documents);
+        recyclerView = rootView.findViewById(R.id.recyclerview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(documentsListAdapter);
 
-        fab = rootView.findViewById(R.id.car_service_fab);
+        fab = rootView.findViewById(R.id.fab);
         fab.setOnClickListener(v -> newDocumentDialog());
 
         return rootView;
