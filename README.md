@@ -13,6 +13,7 @@ Uses database to keep all necessary data in phone memory. Allows you to share da
 - AlertDialog
 - Adapters
 - Intent.ACTION_SEND
+- Intent.ACTION_PICK
 - Anything I forgot about :)
 # Application screenshots
 <p align="middle">
